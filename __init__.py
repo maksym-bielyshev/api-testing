@@ -1,4 +1,5 @@
 import logging.config
+from config import LOG_FILE
 
 logging_settings = {
     "version": 1,
@@ -11,12 +12,12 @@ logging_settings = {
         "client": {
             "class": "logging.FileHandler",
             "formatter": "default_formatter",
-            "filename": "info.log"
+            "filename": LOG_FILE
         },
         "conftest": {
             "class": "logging.FileHandler",
             "formatter": "default_formatter",
-            "filename": "info.log"
+            "filename": LOG_FILE
         },
     },
     "loggers": {

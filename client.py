@@ -18,7 +18,7 @@ class Rest:  # port
             param.update({'queue': queue})
         response = requests.post(f"{URL}:{PORT}", json=param)
         log.info(f"< Response status code: {response.status_code}")
-        return response.status_code
+        return response
 
     def get(self, queue=None):
         log.info(f"> Queue: {queue}")
