@@ -56,8 +56,8 @@ class TestPost:
     def test_invalid_queue_alias_number_post(self, run_stop_server_function,
                                              invalid_queue_border):
         client = Rest()
-        status_code, _ = client.post(TEST_MESSAGE, invalid_queue_border)
-        assert status_code == 400
+        _, message = client.post(TEST_MESSAGE, invalid_queue_border)
+        assert message == 'Queue must be <= 10000'
 
     def test_without_alias_post(self, run_stop_server_function):
         client = Rest()
