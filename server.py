@@ -169,7 +169,6 @@ Must support receiving 2 request types (non-conformant messages must be ignored)
  - queue alias is a number from '0' to '10000'
  - queue alias is optional (default value is '0')
  - oldest message is updated
-        TestPut.test_put_message
  - if there is no message in the queue, server return 404
 
  1.4. DELETE request to retrieve and delete oldest message from the internal message queue:
