@@ -50,7 +50,7 @@ class Rest:  # port
         response = requests.put(f"{URL}:{PORT}", params=param)
         log.info(f"< Response status code: {response.status_code}")
 
-        return response.status_code
+        return response.status_code, response.reason
 
     def delete(self, queue=None):
         log.info(f"> Queue: {queue}")
