@@ -1,0 +1,1305 @@
+2021-01-19 11:14:33,964 - conftest - Run server
+2021-01-19 11:14:33,966 - client - > Queue: None
+2021-01-19 11:14:35,979 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:14:35,980 - client - > Queue: None
+2021-01-19 11:14:37,988 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:14:37,990 - conftest - Kill server
+2021-01-19 11:14:37,991 - conftest - Run server
+2021-01-19 11:14:37,993 - client - > Queue: None
+2021-01-19 11:14:40,003 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:14:40,004 - client - > Message: test_message, queue: None
+2021-01-19 11:14:42,010 - client - < Response status code: 201
+2021-01-19 11:14:42,010 - client - > Queue: None
+2021-01-19 11:14:44,019 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:14:44,021 - conftest - Kill server
+2021-01-19 11:14:44,022 - conftest - Run server
+2021-01-19 11:14:44,024 - client - > Queue: None
+2021-01-19 11:14:46,032 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:14:46,033 - client - > Message: test_message, queue: None
+2021-01-19 11:14:48,039 - client - < Response status code: 201
+2021-01-19 11:14:48,039 - client - > Queue: 0
+2021-01-19 11:14:50,046 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:14:50,048 - conftest - Kill server
+2021-01-19 11:14:50,049 - conftest - Run server
+2021-01-19 11:14:50,051 - client - > Queue: None
+2021-01-19 11:14:52,057 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:14:52,058 - client - > Message: test_message, queue: None
+2021-01-19 11:14:54,064 - client - < Response status code: 201
+2021-01-19 11:14:54,064 - client - > Queue: None
+2021-01-19 11:14:56,072 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:14:56,073 - client - > Queue: None
+2021-01-19 11:14:58,079 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:14:58,081 - conftest - Kill server
+2021-01-19 11:14:58,083 - conftest - Run server
+2021-01-19 11:14:58,085 - client - > Queue: None
+2021-01-19 11:15:00,095 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:15:00,096 - client - > Message: oldest message, queue: None
+2021-01-19 11:15:02,103 - client - < Response status code: 201
+2021-01-19 11:15:02,103 - client - > Message: newest message, queue: None
+2021-01-19 11:15:04,110 - client - < Response status code: 201
+2021-01-19 11:15:04,110 - client - > Queue: None
+2021-01-19 11:15:06,117 - client - < Response status code: 200, response body: oldest message
+2021-01-19 11:15:06,119 - conftest - Kill server
+2021-01-19 11:15:06,121 - conftest - Run server
+2021-01-19 11:15:06,123 - client - > Queue: None
+2021-01-19 11:15:08,130 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:15:08,131 - client - > Queue: None
+2021-01-19 11:15:10,137 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:15:10,139 - conftest - Kill server
+2021-01-19 11:15:10,141 - conftest - Run server
+2021-01-19 11:15:10,143 - client - > Queue: None
+2021-01-19 11:15:12,153 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:15:12,154 - client - > Message: test_message, queue: None
+2021-01-19 11:15:14,159 - client - < Response status code: 201
+2021-01-19 11:15:14,159 - client - > Message: test_message, queue: None
+2021-01-19 11:15:16,167 - client - < Response status code: 201
+2021-01-19 11:15:16,167 - client - > Queue: None
+2021-01-19 11:15:18,173 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:15:18,173 - client - > Queue: None
+2021-01-19 11:15:20,183 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:15:20,184 - conftest - Kill server
+2021-01-19 11:15:20,186 - conftest - Run server
+2021-01-19 11:15:20,187 - client - > Queue: None
+2021-01-19 11:15:22,196 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:15:22,197 - client - > Message: test_message, queue: None
+2021-01-19 11:15:24,203 - client - < Response status code: 201
+2021-01-19 11:15:24,205 - conftest - Kill server
+2021-01-19 11:15:24,206 - conftest - Run server
+2021-01-19 11:15:24,208 - client - > Queue: None
+2021-01-19 11:15:26,216 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:15:26,216 - client - > Message: test_message, queue: None
+2021-01-19 11:15:28,223 - client - < Response status code: 201
+2021-01-19 11:15:28,223 - client - > Queue: 0
+2021-01-19 11:15:30,231 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:15:30,232 - conftest - Kill server
+2021-01-19 11:15:30,234 - conftest - Run server
+2021-01-19 11:15:30,235 - client - > Queue: None
+2021-01-19 11:15:32,245 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:15:32,246 - client - > Message: test_message, queue: 0
+2021-01-19 11:15:34,254 - client - < Response status code: 201
+2021-01-19 11:15:34,255 - client - > Message: test_message, queue: 1
+2021-01-19 11:15:36,261 - client - < Response status code: 201
+2021-01-19 11:15:36,261 - client - > Message: test_message, queue: 2
+2021-01-19 11:15:38,269 - client - < Response status code: 201
+2021-01-19 11:15:38,269 - client - > Message: test_message, queue: 3
+2021-01-19 11:15:40,275 - client - < Response status code: 201
+2021-01-19 11:15:40,275 - client - > Message: test_message, queue: 4
+2021-01-19 11:15:42,281 - client - < Response status code: 201
+2021-01-19 11:15:42,282 - client - > Message: test_message, queue: 5
+2021-01-19 11:15:44,288 - client - < Response status code: 201
+2021-01-19 11:15:44,288 - client - > Message: test_message, queue: 6
+2021-01-19 11:15:46,294 - client - < Response status code: 201
+2021-01-19 11:15:46,294 - client - > Message: test_message, queue: 7
+2021-01-19 11:15:48,305 - client - < Response status code: 201
+2021-01-19 11:15:48,305 - client - > Message: test_message, queue: 8
+2021-01-19 11:15:50,312 - client - < Response status code: 201
+2021-01-19 11:15:50,312 - client - > Message: test_message, queue: 9
+2021-01-19 11:15:52,319 - client - < Response status code: 201
+2021-01-19 11:15:52,319 - client - > Message: test_message, queue: 10
+2021-01-19 11:15:54,325 - client - < Response status code: 201
+2021-01-19 11:15:54,326 - client - > Message: test_message, queue: 11
+2021-01-19 11:15:56,332 - client - < Response status code: 201
+2021-01-19 11:15:56,332 - client - > Message: test_message, queue: 12
+2021-01-19 11:15:58,342 - client - < Response status code: 201
+2021-01-19 11:15:58,342 - client - > Message: test_message, queue: 13
+2021-01-19 11:16:00,351 - client - < Response status code: 201
+2021-01-19 11:16:00,352 - client - > Message: test_message, queue: 14
+2021-01-19 11:16:02,361 - client - < Response status code: 201
+2021-01-19 11:16:02,361 - client - > Message: test_message, queue: 15
+2021-01-19 11:16:04,370 - client - < Response status code: 201
+2021-01-19 11:16:04,371 - client - > Message: test_message, queue: 16
+2021-01-19 11:16:06,380 - client - < Response status code: 201
+2021-01-19 11:16:06,380 - client - > Message: test_message, queue: 17
+2021-01-19 11:16:08,387 - client - < Response status code: 201
+2021-01-19 11:16:08,387 - client - > Message: test_message, queue: 18
+2021-01-19 11:16:10,393 - client - < Response status code: 201
+2021-01-19 11:16:10,393 - client - > Message: test_message, queue: 19
+2021-01-19 11:16:12,401 - client - < Response status code: 201
+2021-01-19 11:16:12,401 - client - > Message: test_message, queue: 20
+2021-01-19 11:16:14,408 - client - < Response status code: 201
+2021-01-19 11:16:14,408 - client - > Message: test_message, queue: 21
+2021-01-19 11:16:16,414 - client - < Response status code: 201
+2021-01-19 11:16:16,414 - client - > Message: test_message, queue: 22
+2021-01-19 11:16:18,420 - client - < Response status code: 201
+2021-01-19 11:16:18,421 - client - > Message: test_message, queue: 23
+2021-01-19 11:16:20,433 - client - < Response status code: 201
+2021-01-19 11:16:20,433 - client - > Message: test_message, queue: 24
+2021-01-19 11:16:22,439 - client - < Response status code: 201
+2021-01-19 11:16:22,439 - client - > Message: test_message, queue: 25
+2021-01-19 11:16:24,445 - client - < Response status code: 201
+2021-01-19 11:16:24,445 - client - > Message: test_message, queue: 26
+2021-01-19 11:16:26,453 - client - < Response status code: 201
+2021-01-19 11:16:26,453 - client - > Message: test_message, queue: 27
+2021-01-19 11:16:28,459 - client - < Response status code: 201
+2021-01-19 11:16:28,459 - client - > Message: test_message, queue: 28
+2021-01-19 11:16:30,465 - client - < Response status code: 201
+2021-01-19 11:16:30,465 - client - > Message: test_message, queue: 29
+2021-01-19 11:16:32,473 - client - < Response status code: 201
+2021-01-19 11:16:32,474 - client - > Message: test_message, queue: 30
+2021-01-19 11:16:34,487 - client - < Response status code: 201
+2021-01-19 11:16:34,487 - client - > Message: test_message, queue: 31
+2021-01-19 11:16:36,496 - client - < Response status code: 201
+2021-01-19 11:16:36,497 - client - > Message: test_message, queue: 32
+2021-01-19 11:16:38,505 - client - < Response status code: 201
+2021-01-19 11:16:38,505 - client - > Message: test_message, queue: 33
+2021-01-19 11:16:40,510 - client - < Response status code: 201
+2021-01-19 11:16:40,511 - client - > Message: test_message, queue: 34
+2021-01-19 11:16:42,516 - client - < Response status code: 201
+2021-01-19 11:16:42,516 - client - > Message: test_message, queue: 35
+2021-01-19 11:16:44,523 - client - < Response status code: 201
+2021-01-19 11:16:44,523 - client - > Message: test_message, queue: 36
+2021-01-19 11:16:46,530 - client - < Response status code: 201
+2021-01-19 11:16:46,530 - client - > Message: test_message, queue: 37
+2021-01-19 11:16:48,537 - client - < Response status code: 201
+2021-01-19 11:16:48,537 - client - > Message: test_message, queue: 38
+2021-01-19 11:16:50,544 - client - < Response status code: 201
+2021-01-19 11:16:50,545 - client - > Message: test_message, queue: 39
+2021-01-19 11:16:52,554 - client - < Response status code: 201
+2021-01-19 11:16:52,555 - client - > Message: test_message, queue: 40
+2021-01-19 11:16:54,564 - client - < Response status code: 201
+2021-01-19 11:16:54,564 - client - > Message: test_message, queue: 41
+2021-01-19 11:16:56,574 - client - < Response status code: 201
+2021-01-19 11:16:56,575 - client - > Message: test_message, queue: 42
+2021-01-19 11:16:58,582 - client - < Response status code: 201
+2021-01-19 11:16:58,582 - client - > Message: test_message, queue: 43
+2021-01-19 11:17:00,587 - client - < Response status code: 201
+2021-01-19 11:17:00,587 - client - > Message: test_message, queue: 44
+2021-01-19 11:17:02,595 - client - < Response status code: 201
+2021-01-19 11:17:02,595 - client - > Message: test_message, queue: 45
+2021-01-19 11:17:04,603 - client - < Response status code: 201
+2021-01-19 11:17:04,603 - client - > Message: test_message, queue: 46
+2021-01-19 11:17:06,612 - client - < Response status code: 201
+2021-01-19 11:17:06,612 - client - > Message: test_message, queue: 47
+2021-01-19 11:17:08,620 - client - < Response status code: 201
+2021-01-19 11:17:08,620 - client - > Message: test_message, queue: 48
+2021-01-19 11:17:10,627 - client - < Response status code: 201
+2021-01-19 11:17:10,627 - client - > Message: test_message, queue: 49
+2021-01-19 11:17:12,633 - client - < Response status code: 201
+2021-01-19 11:17:12,633 - client - > Message: test_message, queue: 50
+2021-01-19 11:17:14,640 - client - < Response status code: 201
+2021-01-19 11:17:14,640 - client - > Message: test_message, queue: 51
+2021-01-19 11:17:16,652 - client - < Response status code: 201
+2021-01-19 11:17:16,652 - client - > Message: test_message, queue: 52
+2021-01-19 11:17:18,659 - client - < Response status code: 201
+2021-01-19 11:17:18,659 - client - > Message: test_message, queue: 53
+2021-01-19 11:17:20,665 - client - < Response status code: 201
+2021-01-19 11:17:20,665 - client - > Message: test_message, queue: 54
+2021-01-19 11:17:22,671 - client - < Response status code: 201
+2021-01-19 11:17:22,671 - client - > Message: test_message, queue: 55
+2021-01-19 11:17:24,679 - client - < Response status code: 201
+2021-01-19 11:17:24,679 - client - > Message: test_message, queue: 56
+2021-01-19 11:17:26,687 - client - < Response status code: 201
+2021-01-19 11:17:26,687 - client - > Message: test_message, queue: 57
+2021-01-19 11:17:28,695 - client - < Response status code: 201
+2021-01-19 11:17:28,695 - client - > Message: test_message, queue: 58
+2021-01-19 11:17:30,701 - client - < Response status code: 201
+2021-01-19 11:17:30,701 - client - > Message: test_message, queue: 59
+2021-01-19 11:17:32,706 - client - < Response status code: 201
+2021-01-19 11:17:32,707 - client - > Message: test_message, queue: 60
+2021-01-19 11:17:34,714 - client - < Response status code: 201
+2021-01-19 11:17:34,715 - client - > Message: test_message, queue: 61
+2021-01-19 11:17:36,722 - client - < Response status code: 201
+2021-01-19 11:17:36,722 - client - > Message: test_message, queue: 62
+2021-01-19 11:17:38,726 - client - < Response status code: 201
+2021-01-19 11:17:38,727 - client - > Message: test_message, queue: 63
+2021-01-19 11:17:40,732 - client - < Response status code: 201
+2021-01-19 11:17:40,732 - client - > Message: test_message, queue: 64
+2021-01-19 11:17:42,737 - client - < Response status code: 201
+2021-01-19 11:17:42,737 - client - > Message: test_message, queue: 65
+2021-01-19 11:17:44,744 - client - < Response status code: 201
+2021-01-19 11:17:44,744 - client - > Message: test_message, queue: 66
+2021-01-19 11:17:46,750 - client - < Response status code: 201
+2021-01-19 11:17:46,751 - client - > Message: test_message, queue: 67
+2021-01-19 11:17:48,758 - client - < Response status code: 201
+2021-01-19 11:17:48,758 - client - > Message: test_message, queue: 68
+2021-01-19 11:17:50,765 - client - < Response status code: 201
+2021-01-19 11:17:50,766 - client - > Message: test_message, queue: 69
+2021-01-19 11:17:52,779 - client - < Response status code: 201
+2021-01-19 11:17:52,779 - client - > Message: test_message, queue: 70
+2021-01-19 11:17:54,785 - client - < Response status code: 201
+2021-01-19 11:17:54,785 - client - > Message: test_message, queue: 71
+2021-01-19 11:17:56,792 - client - < Response status code: 201
+2021-01-19 11:17:56,792 - client - > Message: test_message, queue: 72
+2021-01-19 11:17:58,800 - client - < Response status code: 201
+2021-01-19 11:17:58,800 - client - > Message: test_message, queue: 73
+2021-01-19 11:18:00,811 - client - < Response status code: 201
+2021-01-19 11:18:00,811 - client - > Message: test_message, queue: 74
+2021-01-19 11:18:02,821 - client - < Response status code: 201
+2021-01-19 11:18:02,822 - client - > Message: test_message, queue: 75
+2021-01-19 11:18:04,828 - client - < Response status code: 201
+2021-01-19 11:18:04,828 - client - > Message: test_message, queue: 76
+2021-01-19 11:18:06,833 - client - < Response status code: 201
+2021-01-19 11:18:06,833 - client - > Message: test_message, queue: 77
+2021-01-19 11:18:08,842 - client - < Response status code: 201
+2021-01-19 11:18:08,842 - client - > Message: test_message, queue: 78
+2021-01-19 11:18:10,852 - client - < Response status code: 201
+2021-01-19 11:18:10,852 - client - > Message: test_message, queue: 79
+2021-01-19 11:18:12,860 - client - < Response status code: 201
+2021-01-19 11:18:12,861 - client - > Message: test_message, queue: 80
+2021-01-19 11:18:14,869 - client - < Response status code: 201
+2021-01-19 11:18:14,876 - client - > Message: test_message, queue: 81
+2021-01-19 11:18:16,885 - client - < Response status code: 201
+2021-01-19 11:18:16,885 - client - > Message: test_message, queue: 82
+2021-01-19 11:18:18,900 - client - < Response status code: 201
+2021-01-19 11:18:18,900 - client - > Message: test_message, queue: 83
+2021-01-19 11:18:20,908 - client - < Response status code: 201
+2021-01-19 11:18:20,909 - client - > Message: test_message, queue: 84
+2021-01-19 11:18:22,917 - client - < Response status code: 201
+2021-01-19 11:18:22,917 - client - > Message: test_message, queue: 85
+2021-01-19 11:18:24,926 - client - < Response status code: 201
+2021-01-19 11:18:24,926 - client - > Message: test_message, queue: 86
+2021-01-19 11:18:26,934 - client - < Response status code: 201
+2021-01-19 11:18:26,935 - client - > Message: test_message, queue: 87
+2021-01-19 11:18:28,942 - client - < Response status code: 201
+2021-01-19 11:18:28,942 - client - > Message: test_message, queue: 88
+2021-01-19 11:18:30,949 - client - < Response status code: 201
+2021-01-19 11:18:30,949 - client - > Message: test_message, queue: 89
+2021-01-19 11:18:32,955 - client - < Response status code: 201
+2021-01-19 11:18:32,955 - client - > Message: test_message, queue: 90
+2021-01-19 11:18:34,962 - client - < Response status code: 201
+2021-01-19 11:18:34,962 - client - > Message: test_message, queue: 91
+2021-01-19 11:18:36,967 - client - < Response status code: 201
+2021-01-19 11:18:36,967 - client - > Message: test_message, queue: 92
+2021-01-19 11:18:38,974 - client - < Response status code: 201
+2021-01-19 11:18:38,974 - client - > Message: test_message, queue: 93
+2021-01-19 11:18:40,982 - client - < Response status code: 201
+2021-01-19 11:18:40,982 - client - > Message: test_message, queue: 94
+2021-01-19 11:18:42,993 - client - < Response status code: 201
+2021-01-19 11:18:42,993 - client - > Message: test_message, queue: 95
+2021-01-19 11:18:45,005 - client - < Response status code: 201
+2021-01-19 11:18:45,005 - client - > Message: test_message, queue: 96
+2021-01-19 11:18:47,010 - client - < Response status code: 201
+2021-01-19 11:18:47,010 - client - > Message: test_message, queue: 97
+2021-01-19 11:18:49,015 - client - < Response status code: 201
+2021-01-19 11:18:49,015 - client - > Message: test_message, queue: 98
+2021-01-19 11:18:51,021 - client - < Response status code: 201
+2021-01-19 11:18:51,021 - client - > Message: test_message, queue: 99
+2021-01-19 11:18:53,028 - client - < Response status code: 201
+2021-01-19 11:18:53,030 - conftest - Kill server
+2021-01-19 11:18:53,032 - conftest - Run server
+2021-01-19 11:18:53,034 - client - > Queue: None
+2021-01-19 11:18:55,044 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:18:55,045 - client - > Message: test_message, queue: 0
+2021-01-19 11:18:57,054 - client - < Response status code: 201
+2021-01-19 11:18:57,054 - client - > Message: test_message, queue: 1
+2021-01-19 11:18:59,063 - client - < Response status code: 201
+2021-01-19 11:18:59,063 - client - > Message: test_message, queue: 2
+2021-01-19 11:19:01,069 - client - < Response status code: 201
+2021-01-19 11:19:01,069 - client - > Message: test_message, queue: 3
+2021-01-19 11:19:03,075 - client - < Response status code: 201
+2021-01-19 11:19:03,075 - client - > Message: test_message, queue: 4
+2021-01-19 11:19:05,083 - client - < Response status code: 201
+2021-01-19 11:19:05,084 - client - > Message: test_message, queue: 5
+2021-01-19 11:19:07,091 - client - < Response status code: 201
+2021-01-19 11:19:07,091 - client - > Message: test_message, queue: 6
+2021-01-19 11:19:09,098 - client - < Response status code: 201
+2021-01-19 11:19:09,098 - client - > Message: test_message, queue: 7
+2021-01-19 11:19:11,105 - client - < Response status code: 201
+2021-01-19 11:19:11,105 - client - > Message: test_message, queue: 8
+2021-01-19 11:19:13,110 - client - < Response status code: 201
+2021-01-19 11:19:13,110 - client - > Message: test_message, queue: 9
+2021-01-19 11:19:15,115 - client - < Response status code: 201
+2021-01-19 11:19:15,116 - client - > Message: test_message, queue: 10
+2021-01-19 11:19:17,121 - client - < Response status code: 201
+2021-01-19 11:19:17,122 - client - > Message: test_message, queue: 11
+2021-01-19 11:19:19,128 - client - < Response status code: 201
+2021-01-19 11:19:19,128 - client - > Message: test_message, queue: 12
+2021-01-19 11:19:21,137 - client - < Response status code: 201
+2021-01-19 11:19:21,137 - client - > Message: test_message, queue: 13
+2021-01-19 11:19:23,143 - client - < Response status code: 201
+2021-01-19 11:19:23,144 - client - > Message: test_message, queue: 14
+2021-01-19 11:19:25,151 - client - < Response status code: 201
+2021-01-19 11:19:25,151 - client - > Message: test_message, queue: 15
+2021-01-19 11:19:27,158 - client - < Response status code: 201
+2021-01-19 11:19:27,159 - client - > Message: test_message, queue: 16
+2021-01-19 11:19:29,164 - client - < Response status code: 201
+2021-01-19 11:19:29,164 - client - > Message: test_message, queue: 17
+2021-01-19 11:19:31,169 - client - < Response status code: 201
+2021-01-19 11:19:31,169 - client - > Message: test_message, queue: 18
+2021-01-19 11:19:33,176 - client - < Response status code: 201
+2021-01-19 11:19:33,176 - client - > Message: test_message, queue: 19
+2021-01-19 11:19:35,185 - client - < Response status code: 201
+2021-01-19 11:19:35,185 - client - > Message: test_message, queue: 20
+2021-01-19 11:19:37,194 - client - < Response status code: 201
+2021-01-19 11:19:37,195 - client - > Message: test_message, queue: 21
+2021-01-19 11:19:39,205 - client - < Response status code: 201
+2021-01-19 11:19:39,205 - client - > Message: test_message, queue: 22
+2021-01-19 11:19:41,214 - client - < Response status code: 201
+2021-01-19 11:19:41,214 - client - > Message: test_message, queue: 23
+2021-01-19 11:19:43,226 - client - < Response status code: 201
+2021-01-19 11:19:43,226 - client - > Message: test_message, queue: 24
+2021-01-19 11:19:45,237 - client - < Response status code: 201
+2021-01-19 11:19:45,237 - client - > Message: test_message, queue: 25
+2021-01-19 11:19:47,250 - client - < Response status code: 201
+2021-01-19 11:19:47,250 - client - > Message: test_message, queue: 26
+2021-01-19 11:19:49,258 - client - < Response status code: 201
+2021-01-19 11:19:49,258 - client - > Message: test_message, queue: 27
+2021-01-19 11:19:51,265 - client - < Response status code: 201
+2021-01-19 11:19:51,265 - client - > Message: test_message, queue: 28
+2021-01-19 11:19:53,272 - client - < Response status code: 201
+2021-01-19 11:19:53,272 - client - > Message: test_message, queue: 29
+2021-01-19 11:19:55,280 - client - < Response status code: 201
+2021-01-19 11:19:55,280 - client - > Message: test_message, queue: 30
+2021-01-19 11:19:57,288 - client - < Response status code: 201
+2021-01-19 11:19:57,288 - client - > Message: test_message, queue: 31
+2021-01-19 11:19:59,296 - client - < Response status code: 201
+2021-01-19 11:19:59,296 - client - > Message: test_message, queue: 32
+2021-01-19 11:20:01,306 - client - < Response status code: 201
+2021-01-19 11:20:01,306 - client - > Message: test_message, queue: 33
+2021-01-19 11:20:03,313 - client - < Response status code: 201
+2021-01-19 11:20:03,313 - client - > Message: test_message, queue: 34
+2021-01-19 11:20:05,320 - client - < Response status code: 201
+2021-01-19 11:20:05,320 - client - > Message: test_message, queue: 35
+2021-01-19 11:20:07,328 - client - < Response status code: 201
+2021-01-19 11:20:07,329 - client - > Message: test_message, queue: 36
+2021-01-19 11:20:09,338 - client - < Response status code: 201
+2021-01-19 11:20:09,338 - client - > Message: test_message, queue: 37
+2021-01-19 11:20:11,346 - client - < Response status code: 201
+2021-01-19 11:20:11,346 - client - > Message: test_message, queue: 38
+2021-01-19 11:20:13,353 - client - < Response status code: 201
+2021-01-19 11:20:13,353 - client - > Message: test_message, queue: 39
+2021-01-19 11:20:15,360 - client - < Response status code: 201
+2021-01-19 11:20:15,360 - client - > Message: test_message, queue: 40
+2021-01-19 11:20:17,367 - client - < Response status code: 201
+2021-01-19 11:20:17,367 - client - > Message: test_message, queue: 41
+2021-01-19 11:20:19,375 - client - < Response status code: 201
+2021-01-19 11:20:19,375 - client - > Message: test_message, queue: 42
+2021-01-19 11:20:21,381 - client - < Response status code: 201
+2021-01-19 11:20:21,381 - client - > Message: test_message, queue: 43
+2021-01-19 11:20:23,387 - client - < Response status code: 201
+2021-01-19 11:20:23,387 - client - > Message: test_message, queue: 44
+2021-01-19 11:20:25,393 - client - < Response status code: 201
+2021-01-19 11:20:25,394 - client - > Message: test_message, queue: 45
+2021-01-19 11:20:27,399 - client - < Response status code: 201
+2021-01-19 11:20:27,399 - client - > Message: test_message, queue: 46
+2021-01-19 11:20:29,407 - client - < Response status code: 201
+2021-01-19 11:20:29,407 - client - > Message: test_message, queue: 47
+2021-01-19 11:20:31,414 - client - < Response status code: 201
+2021-01-19 11:20:31,414 - client - > Message: test_message, queue: 48
+2021-01-19 11:20:33,421 - client - < Response status code: 201
+2021-01-19 11:20:33,422 - client - > Message: test_message, queue: 49
+2021-01-19 11:20:35,429 - client - < Response status code: 201
+2021-01-19 11:20:35,429 - client - > Message: test_message, queue: 50
+2021-01-19 11:20:37,439 - client - < Response status code: 201
+2021-01-19 11:20:37,439 - client - > Message: test_message, queue: 51
+2021-01-19 11:20:39,444 - client - < Response status code: 201
+2021-01-19 11:20:39,444 - client - > Message: test_message, queue: 52
+2021-01-19 11:20:41,450 - client - < Response status code: 201
+2021-01-19 11:20:41,450 - client - > Message: test_message, queue: 53
+2021-01-19 11:20:43,458 - client - < Response status code: 201
+2021-01-19 11:20:43,459 - client - > Message: test_message, queue: 54
+2021-01-19 11:20:45,473 - client - < Response status code: 201
+2021-01-19 11:20:45,473 - client - > Message: test_message, queue: 55
+2021-01-19 11:20:47,480 - client - < Response status code: 201
+2021-01-19 11:20:47,480 - client - > Message: test_message, queue: 56
+2021-01-19 11:20:49,488 - client - < Response status code: 201
+2021-01-19 11:20:49,488 - client - > Message: test_message, queue: 57
+2021-01-19 11:20:51,494 - client - < Response status code: 201
+2021-01-19 11:20:51,494 - client - > Message: test_message, queue: 58
+2021-01-19 11:20:53,501 - client - < Response status code: 201
+2021-01-19 11:20:53,502 - client - > Message: test_message, queue: 59
+2021-01-19 11:20:55,512 - client - < Response status code: 201
+2021-01-19 11:20:55,513 - client - > Message: test_message, queue: 60
+2021-01-19 11:20:57,520 - client - < Response status code: 201
+2021-01-19 11:20:57,520 - client - > Message: test_message, queue: 61
+2021-01-19 11:20:59,527 - client - < Response status code: 201
+2021-01-19 11:20:59,527 - client - > Message: test_message, queue: 62
+2021-01-19 11:21:01,537 - client - < Response status code: 201
+2021-01-19 11:21:01,537 - client - > Message: test_message, queue: 63
+2021-01-19 11:21:03,543 - client - < Response status code: 201
+2021-01-19 11:21:03,543 - client - > Message: test_message, queue: 64
+2021-01-19 11:21:05,552 - client - < Response status code: 201
+2021-01-19 11:21:05,552 - client - > Message: test_message, queue: 65
+2021-01-19 11:21:07,560 - client - < Response status code: 201
+2021-01-19 11:21:07,561 - client - > Message: test_message, queue: 66
+2021-01-19 11:21:09,567 - client - < Response status code: 201
+2021-01-19 11:21:09,567 - client - > Message: test_message, queue: 67
+2021-01-19 11:21:11,576 - client - < Response status code: 201
+2021-01-19 11:21:11,576 - client - > Message: test_message, queue: 68
+2021-01-19 11:21:13,582 - client - < Response status code: 201
+2021-01-19 11:21:13,582 - client - > Message: test_message, queue: 69
+2021-01-19 11:21:15,590 - client - < Response status code: 201
+2021-01-19 11:21:15,590 - client - > Message: test_message, queue: 70
+2021-01-19 11:21:17,597 - client - < Response status code: 201
+2021-01-19 11:21:17,597 - client - > Message: test_message, queue: 71
+2021-01-19 11:21:19,606 - client - < Response status code: 201
+2021-01-19 11:21:19,606 - client - > Message: test_message, queue: 72
+2021-01-19 11:21:21,612 - client - < Response status code: 201
+2021-01-19 11:21:21,612 - client - > Message: test_message, queue: 73
+2021-01-19 11:21:23,619 - client - < Response status code: 201
+2021-01-19 11:21:23,619 - client - > Message: test_message, queue: 74
+2021-01-19 11:21:25,631 - client - < Response status code: 201
+2021-01-19 11:21:25,631 - client - > Message: test_message, queue: 75
+2021-01-19 11:21:27,637 - client - < Response status code: 201
+2021-01-19 11:21:27,637 - client - > Message: test_message, queue: 76
+2021-01-19 11:21:29,652 - client - < Response status code: 201
+2021-01-19 11:21:29,652 - client - > Message: test_message, queue: 77
+2021-01-19 11:21:31,664 - client - < Response status code: 201
+2021-01-19 11:21:31,665 - client - > Message: test_message, queue: 78
+2021-01-19 11:21:33,673 - client - < Response status code: 201
+2021-01-19 11:21:33,674 - client - > Message: test_message, queue: 79
+2021-01-19 11:21:35,682 - client - < Response status code: 201
+2021-01-19 11:21:35,682 - client - > Message: test_message, queue: 80
+2021-01-19 11:21:37,689 - client - < Response status code: 201
+2021-01-19 11:21:37,689 - client - > Message: test_message, queue: 81
+2021-01-19 11:21:39,696 - client - < Response status code: 201
+2021-01-19 11:21:39,696 - client - > Message: test_message, queue: 82
+2021-01-19 11:21:41,702 - client - < Response status code: 201
+2021-01-19 11:21:41,702 - client - > Message: test_message, queue: 83
+2021-01-19 11:21:43,711 - client - < Response status code: 201
+2021-01-19 11:21:43,712 - client - > Message: test_message, queue: 84
+2021-01-19 11:21:45,720 - client - < Response status code: 201
+2021-01-19 11:21:45,720 - client - > Message: test_message, queue: 85
+2021-01-19 11:21:47,730 - client - < Response status code: 201
+2021-01-19 11:21:47,730 - client - > Message: test_message, queue: 86
+2021-01-19 11:21:49,739 - client - < Response status code: 201
+2021-01-19 11:21:49,739 - client - > Message: test_message, queue: 87
+2021-01-19 11:21:51,745 - client - < Response status code: 201
+2021-01-19 11:21:51,745 - client - > Message: test_message, queue: 88
+2021-01-19 11:21:53,752 - client - < Response status code: 201
+2021-01-19 11:21:53,752 - client - > Message: test_message, queue: 89
+2021-01-19 11:21:55,759 - client - < Response status code: 201
+2021-01-19 11:21:55,759 - client - > Message: test_message, queue: 90
+2021-01-19 11:21:57,767 - client - < Response status code: 201
+2021-01-19 11:21:57,767 - client - > Message: test_message, queue: 91
+2021-01-19 11:21:59,774 - client - < Response status code: 201
+2021-01-19 11:21:59,774 - client - > Message: test_message, queue: 92
+2021-01-19 11:22:01,780 - client - < Response status code: 201
+2021-01-19 11:22:01,780 - client - > Message: test_message, queue: 93
+2021-01-19 11:22:03,789 - client - < Response status code: 201
+2021-01-19 11:22:03,789 - client - > Message: test_message, queue: 94
+2021-01-19 11:22:05,797 - client - < Response status code: 201
+2021-01-19 11:22:05,797 - client - > Message: test_message, queue: 95
+2021-01-19 11:22:07,813 - client - < Response status code: 201
+2021-01-19 11:22:07,813 - client - > Message: test_message, queue: 96
+2021-01-19 11:22:09,819 - client - < Response status code: 201
+2021-01-19 11:22:09,819 - client - > Message: test_message, queue: 97
+2021-01-19 11:22:11,825 - client - < Response status code: 201
+2021-01-19 11:22:11,825 - client - > Message: test_message, queue: 98
+2021-01-19 11:22:13,835 - client - < Response status code: 201
+2021-01-19 11:22:13,835 - client - > Message: test_message, queue: 99
+2021-01-19 11:22:15,842 - client - < Response status code: 201
+2021-01-19 11:22:15,842 - client - > Message: test_message, queue: 101
+2021-01-19 11:22:17,862 - client - < Response status code: 201
+2021-01-19 11:22:17,863 - client - > Queue: 101
+2021-01-19 11:22:19,872 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:22:19,874 - conftest - Kill server
+2021-01-19 11:22:19,876 - conftest - Run server
+2021-01-19 11:22:19,878 - client - > Queue: None
+2021-01-19 11:22:21,886 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:22:21,887 - client - > Message: test_message, queue: None
+2021-01-19 11:22:23,895 - client - < Response status code: 201
+2021-01-19 11:22:23,895 - client - > Message: test_message, queue: None
+2021-01-19 11:22:25,907 - client - < Response status code: 201
+2021-01-19 11:22:25,907 - client - > Message: test_message, queue: None
+2021-01-19 11:22:27,916 - client - < Response status code: 201
+2021-01-19 11:22:27,916 - client - > Message: test_message, queue: None
+2021-01-19 11:22:29,925 - client - < Response status code: 201
+2021-01-19 11:22:29,926 - client - > Message: test_message, queue: None
+2021-01-19 11:22:31,932 - client - < Response status code: 201
+2021-01-19 11:22:31,932 - client - > Message: test_message, queue: None
+2021-01-19 11:22:33,940 - client - < Response status code: 201
+2021-01-19 11:22:33,941 - client - > Message: test_message, queue: None
+2021-01-19 11:22:35,947 - client - < Response status code: 201
+2021-01-19 11:22:35,948 - client - > Message: test_message, queue: None
+2021-01-19 11:22:37,955 - client - < Response status code: 201
+2021-01-19 11:22:37,955 - client - > Message: test_message, queue: None
+2021-01-19 11:22:39,961 - client - < Response status code: 201
+2021-01-19 11:22:39,961 - client - > Message: test_message, queue: None
+2021-01-19 11:22:41,967 - client - < Response status code: 201
+2021-01-19 11:22:41,968 - client - > Message: test_message, queue: None
+2021-01-19 11:22:43,975 - client - < Response status code: 201
+2021-01-19 11:22:43,975 - client - > Message: test_message, queue: None
+2021-01-19 11:22:45,983 - client - < Response status code: 201
+2021-01-19 11:22:45,983 - client - > Message: test_message, queue: None
+2021-01-19 11:22:47,991 - client - < Response status code: 201
+2021-01-19 11:22:47,991 - client - > Message: test_message, queue: None
+2021-01-19 11:22:49,997 - client - < Response status code: 201
+2021-01-19 11:22:49,997 - client - > Message: test_message, queue: None
+2021-01-19 11:22:52,004 - client - < Response status code: 201
+2021-01-19 11:22:52,004 - client - > Message: test_message, queue: None
+2021-01-19 11:22:54,011 - client - < Response status code: 201
+2021-01-19 11:22:54,012 - client - > Message: test_message, queue: None
+2021-01-19 11:22:56,016 - client - < Response status code: 201
+2021-01-19 11:22:56,016 - client - > Message: test_message, queue: None
+2021-01-19 11:22:58,024 - client - < Response status code: 201
+2021-01-19 11:22:58,024 - client - > Message: test_message, queue: None
+2021-01-19 11:23:00,030 - client - < Response status code: 201
+2021-01-19 11:23:00,030 - client - > Message: test_message, queue: None
+2021-01-19 11:23:02,038 - client - < Response status code: 201
+2021-01-19 11:23:02,038 - client - > Message: test_message, queue: None
+2021-01-19 11:23:04,044 - client - < Response status code: 201
+2021-01-19 11:23:04,044 - client - > Message: test_message, queue: None
+2021-01-19 11:23:06,052 - client - < Response status code: 201
+2021-01-19 11:23:06,052 - client - > Message: test_message, queue: None
+2021-01-19 11:23:08,059 - client - < Response status code: 201
+2021-01-19 11:23:08,059 - client - > Message: test_message, queue: None
+2021-01-19 11:23:10,065 - client - < Response status code: 201
+2021-01-19 11:23:10,065 - client - > Message: test_message, queue: None
+2021-01-19 11:23:12,085 - client - < Response status code: 201
+2021-01-19 11:23:12,086 - client - > Message: test_message, queue: None
+2021-01-19 11:23:14,094 - client - < Response status code: 201
+2021-01-19 11:23:14,094 - client - > Message: test_message, queue: None
+2021-01-19 11:23:16,102 - client - < Response status code: 201
+2021-01-19 11:23:16,103 - client - > Message: test_message, queue: None
+2021-01-19 11:23:18,116 - client - < Response status code: 201
+2021-01-19 11:23:18,117 - client - > Message: test_message, queue: None
+2021-01-19 11:23:20,121 - client - < Response status code: 201
+2021-01-19 11:23:20,121 - client - > Message: test_message, queue: None
+2021-01-19 11:23:22,132 - client - < Response status code: 201
+2021-01-19 11:23:22,132 - client - > Message: test_message, queue: None
+2021-01-19 11:23:24,141 - client - < Response status code: 201
+2021-01-19 11:23:24,142 - client - > Message: test_message, queue: None
+2021-01-19 11:23:26,149 - client - < Response status code: 201
+2021-01-19 11:23:26,150 - client - > Message: test_message, queue: None
+2021-01-19 11:23:28,158 - client - < Response status code: 201
+2021-01-19 11:23:28,158 - client - > Message: test_message, queue: None
+2021-01-19 11:23:30,164 - client - < Response status code: 201
+2021-01-19 11:23:30,164 - client - > Message: test_message, queue: None
+2021-01-19 11:23:32,173 - client - < Response status code: 201
+2021-01-19 11:23:32,173 - client - > Message: test_message, queue: None
+2021-01-19 11:23:34,179 - client - < Response status code: 201
+2021-01-19 11:23:34,180 - client - > Message: test_message, queue: None
+2021-01-19 11:23:36,185 - client - < Response status code: 201
+2021-01-19 11:23:36,185 - client - > Message: test_message, queue: None
+2021-01-19 11:23:38,191 - client - < Response status code: 201
+2021-01-19 11:23:38,191 - client - > Message: test_message, queue: None
+2021-01-19 11:23:40,198 - client - < Response status code: 201
+2021-01-19 11:23:40,199 - client - > Message: test_message, queue: None
+2021-01-19 11:23:42,207 - client - < Response status code: 201
+2021-01-19 11:23:42,207 - client - > Message: test_message, queue: None
+2021-01-19 11:23:44,213 - client - < Response status code: 201
+2021-01-19 11:23:44,213 - client - > Message: test_message, queue: None
+2021-01-19 11:23:46,220 - client - < Response status code: 201
+2021-01-19 11:23:46,220 - client - > Message: test_message, queue: None
+2021-01-19 11:23:48,232 - client - < Response status code: 201
+2021-01-19 11:23:48,232 - client - > Message: test_message, queue: None
+2021-01-19 11:23:50,239 - client - < Response status code: 201
+2021-01-19 11:23:50,239 - client - > Message: test_message, queue: None
+2021-01-19 11:23:52,251 - client - < Response status code: 201
+2021-01-19 11:23:52,251 - client - > Message: test_message, queue: None
+2021-01-19 11:23:54,258 - client - < Response status code: 201
+2021-01-19 11:23:54,259 - client - > Message: test_message, queue: None
+2021-01-19 11:23:56,265 - client - < Response status code: 201
+2021-01-19 11:23:56,265 - client - > Message: test_message, queue: None
+2021-01-19 11:23:58,279 - client - < Response status code: 201
+2021-01-19 11:23:58,279 - client - > Message: test_message, queue: None
+2021-01-19 11:24:00,288 - client - < Response status code: 201
+2021-01-19 11:24:00,288 - client - > Message: test_message, queue: None
+2021-01-19 11:24:02,296 - client - < Response status code: 201
+2021-01-19 11:24:02,296 - client - > Message: test_message, queue: None
+2021-01-19 11:24:04,305 - client - < Response status code: 201
+2021-01-19 11:24:04,306 - client - > Message: test_message, queue: None
+2021-01-19 11:24:06,311 - client - < Response status code: 201
+2021-01-19 11:24:06,311 - client - > Message: test_message, queue: None
+2021-01-19 11:24:08,320 - client - < Response status code: 201
+2021-01-19 11:24:08,321 - client - > Message: test_message, queue: None
+2021-01-19 11:24:10,326 - client - < Response status code: 201
+2021-01-19 11:24:10,326 - client - > Message: test_message, queue: None
+2021-01-19 11:24:12,336 - client - < Response status code: 201
+2021-01-19 11:24:12,336 - client - > Message: test_message, queue: None
+2021-01-19 11:24:14,345 - client - < Response status code: 201
+2021-01-19 11:24:14,345 - client - > Message: test_message, queue: None
+2021-01-19 11:24:16,354 - client - < Response status code: 201
+2021-01-19 11:24:16,354 - client - > Message: test_message, queue: None
+2021-01-19 11:24:18,361 - client - < Response status code: 201
+2021-01-19 11:24:18,361 - client - > Message: test_message, queue: None
+2021-01-19 11:24:20,369 - client - < Response status code: 201
+2021-01-19 11:24:20,369 - client - > Message: test_message, queue: None
+2021-01-19 11:24:22,375 - client - < Response status code: 201
+2021-01-19 11:24:22,375 - client - > Message: test_message, queue: None
+2021-01-19 11:24:24,381 - client - < Response status code: 201
+2021-01-19 11:24:24,382 - client - > Message: test_message, queue: None
+2021-01-19 11:24:26,387 - client - < Response status code: 201
+2021-01-19 11:24:26,388 - client - > Message: test_message, queue: None
+2021-01-19 11:24:28,397 - client - < Response status code: 201
+2021-01-19 11:24:28,397 - client - > Message: test_message, queue: None
+2021-01-19 11:24:30,405 - client - < Response status code: 201
+2021-01-19 11:24:30,405 - client - > Message: test_message, queue: None
+2021-01-19 11:24:32,414 - client - < Response status code: 201
+2021-01-19 11:24:32,414 - client - > Message: test_message, queue: None
+2021-01-19 11:24:34,421 - client - < Response status code: 201
+2021-01-19 11:24:34,421 - client - > Message: test_message, queue: None
+2021-01-19 11:24:36,426 - client - < Response status code: 201
+2021-01-19 11:24:36,427 - client - > Message: test_message, queue: None
+2021-01-19 11:24:38,434 - client - < Response status code: 201
+2021-01-19 11:24:38,434 - client - > Message: test_message, queue: None
+2021-01-19 11:24:40,441 - client - < Response status code: 201
+2021-01-19 11:24:40,441 - client - > Message: test_message, queue: None
+2021-01-19 11:24:42,451 - client - < Response status code: 201
+2021-01-19 11:24:42,451 - client - > Message: test_message, queue: None
+2021-01-19 11:24:44,459 - client - < Response status code: 201
+2021-01-19 11:24:44,459 - client - > Message: test_message, queue: None
+2021-01-19 11:24:46,466 - client - < Response status code: 201
+2021-01-19 11:24:46,466 - client - > Message: test_message, queue: None
+2021-01-19 11:24:48,475 - client - < Response status code: 201
+2021-01-19 11:24:48,476 - client - > Message: test_message, queue: None
+2021-01-19 11:24:50,482 - client - < Response status code: 201
+2021-01-19 11:24:50,483 - client - > Message: test_message, queue: None
+2021-01-19 11:24:52,489 - client - < Response status code: 201
+2021-01-19 11:24:52,489 - client - > Message: test_message, queue: None
+2021-01-19 11:24:54,495 - client - < Response status code: 201
+2021-01-19 11:24:54,495 - client - > Message: test_message, queue: None
+2021-01-19 11:24:56,504 - client - < Response status code: 201
+2021-01-19 11:24:56,504 - client - > Message: test_message, queue: None
+2021-01-19 11:24:58,511 - client - < Response status code: 201
+2021-01-19 11:24:58,511 - client - > Message: test_message, queue: None
+2021-01-19 11:25:00,516 - client - < Response status code: 201
+2021-01-19 11:25:00,516 - client - > Message: test_message, queue: None
+2021-01-19 11:25:02,525 - client - < Response status code: 201
+2021-01-19 11:25:02,525 - client - > Message: test_message, queue: None
+2021-01-19 11:25:04,535 - client - < Response status code: 201
+2021-01-19 11:25:04,535 - client - > Message: test_message, queue: None
+2021-01-19 11:25:06,546 - client - < Response status code: 201
+2021-01-19 11:25:06,547 - client - > Message: test_message, queue: None
+2021-01-19 11:25:08,555 - client - < Response status code: 201
+2021-01-19 11:25:08,555 - client - > Message: test_message, queue: None
+2021-01-19 11:25:10,560 - client - < Response status code: 201
+2021-01-19 11:25:10,560 - client - > Message: test_message, queue: None
+2021-01-19 11:25:12,567 - client - < Response status code: 201
+2021-01-19 11:25:12,568 - client - > Message: test_message, queue: None
+2021-01-19 11:25:14,576 - client - < Response status code: 201
+2021-01-19 11:25:14,576 - client - > Message: test_message, queue: None
+2021-01-19 11:25:16,582 - client - < Response status code: 201
+2021-01-19 11:25:16,582 - client - > Message: test_message, queue: None
+2021-01-19 11:25:18,587 - client - < Response status code: 201
+2021-01-19 11:25:18,587 - client - > Message: test_message, queue: None
+2021-01-19 11:25:20,593 - client - < Response status code: 201
+2021-01-19 11:25:20,593 - client - > Message: test_message, queue: None
+2021-01-19 11:25:22,600 - client - < Response status code: 201
+2021-01-19 11:25:22,601 - client - > Message: test_message, queue: None
+2021-01-19 11:25:24,610 - client - < Response status code: 201
+2021-01-19 11:25:24,610 - client - > Message: test_message, queue: None
+2021-01-19 11:25:26,617 - client - < Response status code: 201
+2021-01-19 11:25:26,617 - client - > Message: test_message, queue: None
+2021-01-19 11:25:28,623 - client - < Response status code: 201
+2021-01-19 11:25:28,624 - client - > Message: test_message, queue: None
+2021-01-19 11:25:30,633 - client - < Response status code: 201
+2021-01-19 11:25:30,634 - client - > Message: test_message, queue: None
+2021-01-19 11:25:32,642 - client - < Response status code: 201
+2021-01-19 11:25:32,643 - client - > Message: test_message, queue: None
+2021-01-19 11:25:34,649 - client - < Response status code: 201
+2021-01-19 11:25:34,649 - client - > Message: test_message, queue: None
+2021-01-19 11:25:36,657 - client - < Response status code: 201
+2021-01-19 11:25:36,658 - client - > Message: test_message, queue: None
+2021-01-19 11:25:38,666 - client - < Response status code: 201
+2021-01-19 11:25:38,666 - client - > Message: test_message, queue: None
+2021-01-19 11:25:40,673 - client - < Response status code: 201
+2021-01-19 11:25:40,673 - client - > Message: test_message, queue: None
+2021-01-19 11:25:42,680 - client - < Response status code: 201
+2021-01-19 11:25:42,682 - conftest - Kill server
+2021-01-19 11:25:42,683 - conftest - Run server
+2021-01-19 11:25:42,687 - client - > Queue: None
+2021-01-19 11:25:44,703 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:25:44,705 - client - > Message: test_message, queue: None
+2021-01-19 11:25:46,713 - client - < Response status code: 201
+2021-01-19 11:25:46,713 - client - > Message: test_message, queue: None
+2021-01-19 11:25:48,720 - client - < Response status code: 201
+2021-01-19 11:25:48,721 - client - > Message: test_message, queue: None
+2021-01-19 11:25:50,726 - client - < Response status code: 201
+2021-01-19 11:25:50,726 - client - > Message: test_message, queue: None
+2021-01-19 11:25:52,733 - client - < Response status code: 201
+2021-01-19 11:25:52,733 - client - > Message: test_message, queue: None
+2021-01-19 11:25:54,740 - client - < Response status code: 201
+2021-01-19 11:25:54,741 - client - > Message: test_message, queue: None
+2021-01-19 11:25:56,745 - client - < Response status code: 201
+2021-01-19 11:25:56,745 - client - > Message: test_message, queue: None
+2021-01-19 11:25:58,753 - client - < Response status code: 201
+2021-01-19 11:25:58,754 - client - > Message: test_message, queue: None
+2021-01-19 11:26:00,762 - client - < Response status code: 201
+2021-01-19 11:26:00,762 - client - > Message: test_message, queue: None
+2021-01-19 11:26:02,768 - client - < Response status code: 201
+2021-01-19 11:26:02,768 - client - > Message: test_message, queue: None
+2021-01-19 11:26:04,776 - client - < Response status code: 201
+2021-01-19 11:26:04,777 - client - > Message: test_message, queue: None
+2021-01-19 11:26:06,785 - client - < Response status code: 201
+2021-01-19 11:26:06,785 - client - > Message: test_message, queue: None
+2021-01-19 11:26:08,791 - client - < Response status code: 201
+2021-01-19 11:26:08,792 - client - > Message: test_message, queue: None
+2021-01-19 11:26:10,799 - client - < Response status code: 201
+2021-01-19 11:26:10,799 - client - > Message: test_message, queue: None
+2021-01-19 11:26:12,807 - client - < Response status code: 201
+2021-01-19 11:26:12,807 - client - > Message: test_message, queue: None
+2021-01-19 11:26:14,813 - client - < Response status code: 201
+2021-01-19 11:26:14,814 - client - > Message: test_message, queue: None
+2021-01-19 11:26:16,822 - client - < Response status code: 201
+2021-01-19 11:26:16,823 - client - > Message: test_message, queue: None
+2021-01-19 11:26:18,828 - client - < Response status code: 201
+2021-01-19 11:26:18,829 - client - > Message: test_message, queue: None
+2021-01-19 11:26:20,836 - client - < Response status code: 201
+2021-01-19 11:26:20,836 - client - > Message: test_message, queue: None
+2021-01-19 11:26:22,842 - client - < Response status code: 201
+2021-01-19 11:26:22,843 - client - > Message: test_message, queue: None
+2021-01-19 11:26:24,851 - client - < Response status code: 201
+2021-01-19 11:26:24,851 - client - > Message: test_message, queue: None
+2021-01-19 11:26:26,859 - client - < Response status code: 201
+2021-01-19 11:26:26,859 - client - > Message: test_message, queue: None
+2021-01-19 11:26:28,868 - client - < Response status code: 201
+2021-01-19 11:26:28,868 - client - > Message: test_message, queue: None
+2021-01-19 11:26:30,875 - client - < Response status code: 201
+2021-01-19 11:26:30,876 - client - > Message: test_message, queue: None
+2021-01-19 11:26:32,892 - client - < Response status code: 201
+2021-01-19 11:26:32,893 - client - > Message: test_message, queue: None
+2021-01-19 11:26:34,901 - client - < Response status code: 201
+2021-01-19 11:26:34,901 - client - > Message: test_message, queue: None
+2021-01-19 11:26:36,907 - client - < Response status code: 201
+2021-01-19 11:26:36,907 - client - > Message: test_message, queue: None
+2021-01-19 11:26:38,922 - client - < Response status code: 201
+2021-01-19 11:26:38,922 - client - > Message: test_message, queue: None
+2021-01-19 11:26:40,930 - client - < Response status code: 201
+2021-01-19 11:26:40,930 - client - > Message: test_message, queue: None
+2021-01-19 11:26:42,936 - client - < Response status code: 201
+2021-01-19 11:26:42,937 - client - > Message: test_message, queue: None
+2021-01-19 11:26:44,942 - client - < Response status code: 201
+2021-01-19 11:26:44,942 - client - > Message: test_message, queue: None
+2021-01-19 11:26:46,949 - client - < Response status code: 201
+2021-01-19 11:26:46,950 - client - > Message: test_message, queue: None
+2021-01-19 11:26:48,957 - client - < Response status code: 201
+2021-01-19 11:26:48,958 - client - > Message: test_message, queue: None
+2021-01-19 11:26:50,966 - client - < Response status code: 201
+2021-01-19 11:26:50,967 - client - > Message: test_message, queue: None
+2021-01-19 11:26:52,971 - client - < Response status code: 201
+2021-01-19 11:26:52,971 - client - > Message: test_message, queue: None
+2021-01-19 11:26:54,982 - client - < Response status code: 201
+2021-01-19 11:26:54,982 - client - > Message: test_message, queue: None
+2021-01-19 11:26:56,990 - client - < Response status code: 201
+2021-01-19 11:26:56,990 - client - > Message: test_message, queue: None
+2021-01-19 11:26:58,998 - client - < Response status code: 201
+2021-01-19 11:26:58,998 - client - > Message: test_message, queue: None
+2021-01-19 11:27:01,008 - client - < Response status code: 201
+2021-01-19 11:27:01,008 - client - > Message: test_message, queue: None
+2021-01-19 11:27:03,015 - client - < Response status code: 201
+2021-01-19 11:27:03,016 - client - > Message: test_message, queue: None
+2021-01-19 11:27:05,024 - client - < Response status code: 201
+2021-01-19 11:27:05,025 - client - > Message: test_message, queue: None
+2021-01-19 11:27:07,030 - client - < Response status code: 201
+2021-01-19 11:27:07,030 - client - > Message: test_message, queue: None
+2021-01-19 11:27:09,038 - client - < Response status code: 201
+2021-01-19 11:27:09,038 - client - > Message: test_message, queue: None
+2021-01-19 11:27:11,043 - client - < Response status code: 201
+2021-01-19 11:27:11,043 - client - > Message: test_message, queue: None
+2021-01-19 11:27:13,054 - client - < Response status code: 201
+2021-01-19 11:27:13,054 - client - > Message: test_message, queue: None
+2021-01-19 11:27:15,062 - client - < Response status code: 201
+2021-01-19 11:27:15,062 - client - > Message: test_message, queue: None
+2021-01-19 11:27:17,070 - client - < Response status code: 201
+2021-01-19 11:27:17,071 - client - > Message: test_message, queue: None
+2021-01-19 11:27:19,078 - client - < Response status code: 201
+2021-01-19 11:27:19,078 - client - > Message: test_message, queue: None
+2021-01-19 11:27:21,084 - client - < Response status code: 201
+2021-01-19 11:27:21,084 - client - > Message: test_message, queue: None
+2021-01-19 11:27:23,095 - client - < Response status code: 201
+2021-01-19 11:27:23,096 - client - > Message: test_message, queue: None
+2021-01-19 11:27:25,104 - client - < Response status code: 201
+2021-01-19 11:27:25,104 - client - > Message: test_message, queue: None
+2021-01-19 11:27:27,114 - client - < Response status code: 201
+2021-01-19 11:27:27,114 - client - > Message: test_message, queue: None
+2021-01-19 11:27:29,135 - client - < Response status code: 201
+2021-01-19 11:27:29,136 - client - > Message: test_message, queue: None
+2021-01-19 11:27:31,147 - client - < Response status code: 201
+2021-01-19 11:27:31,147 - client - > Message: test_message, queue: None
+2021-01-19 11:27:33,157 - client - < Response status code: 201
+2021-01-19 11:27:33,157 - client - > Message: test_message, queue: None
+2021-01-19 11:27:35,164 - client - < Response status code: 201
+2021-01-19 11:27:35,165 - client - > Message: test_message, queue: None
+2021-01-19 11:27:37,173 - client - < Response status code: 201
+2021-01-19 11:27:37,174 - client - > Message: test_message, queue: None
+2021-01-19 11:27:39,185 - client - < Response status code: 201
+2021-01-19 11:27:39,185 - client - > Message: test_message, queue: None
+2021-01-19 11:27:41,196 - client - < Response status code: 201
+2021-01-19 11:27:41,197 - client - > Message: test_message, queue: None
+2021-01-19 11:27:43,202 - client - < Response status code: 201
+2021-01-19 11:27:43,202 - client - > Message: test_message, queue: None
+2021-01-19 11:27:45,209 - client - < Response status code: 201
+2021-01-19 11:27:45,209 - client - > Message: test_message, queue: None
+2021-01-19 11:27:47,218 - client - < Response status code: 201
+2021-01-19 11:27:47,218 - client - > Message: test_message, queue: None
+2021-01-19 11:27:49,224 - client - < Response status code: 201
+2021-01-19 11:27:49,224 - client - > Message: test_message, queue: None
+2021-01-19 11:27:51,235 - client - < Response status code: 201
+2021-01-19 11:27:51,235 - client - > Message: test_message, queue: None
+2021-01-19 11:27:53,241 - client - < Response status code: 201
+2021-01-19 11:27:53,241 - client - > Message: test_message, queue: None
+2021-01-19 11:27:55,249 - client - < Response status code: 201
+2021-01-19 11:27:55,249 - client - > Message: test_message, queue: None
+2021-01-19 11:27:57,259 - client - < Response status code: 201
+2021-01-19 11:27:57,259 - client - > Message: test_message, queue: None
+2021-01-19 11:27:59,268 - client - < Response status code: 201
+2021-01-19 11:27:59,268 - client - > Message: test_message, queue: None
+2021-01-19 11:28:01,275 - client - < Response status code: 201
+2021-01-19 11:28:01,276 - client - > Message: test_message, queue: None
+2021-01-19 11:28:03,285 - client - < Response status code: 201
+2021-01-19 11:28:03,285 - client - > Message: test_message, queue: None
+2021-01-19 11:28:05,295 - client - < Response status code: 201
+2021-01-19 11:28:05,295 - client - > Message: test_message, queue: None
+2021-01-19 11:28:07,303 - client - < Response status code: 201
+2021-01-19 11:28:07,303 - client - > Message: test_message, queue: None
+2021-01-19 11:28:09,313 - client - < Response status code: 201
+2021-01-19 11:28:09,314 - client - > Message: test_message, queue: None
+2021-01-19 11:28:11,325 - client - < Response status code: 201
+2021-01-19 11:28:11,325 - client - > Message: test_message, queue: None
+2021-01-19 11:28:13,331 - client - < Response status code: 201
+2021-01-19 11:28:13,331 - client - > Message: test_message, queue: None
+2021-01-19 11:28:15,340 - client - < Response status code: 201
+2021-01-19 11:28:15,341 - client - > Message: test_message, queue: None
+2021-01-19 11:28:17,347 - client - < Response status code: 201
+2021-01-19 11:28:17,347 - client - > Message: test_message, queue: None
+2021-01-19 11:28:19,353 - client - < Response status code: 201
+2021-01-19 11:28:19,353 - client - > Message: test_message, queue: None
+2021-01-19 11:28:21,364 - client - < Response status code: 201
+2021-01-19 11:28:21,365 - client - > Message: test_message, queue: None
+2021-01-19 11:28:23,370 - client - < Response status code: 201
+2021-01-19 11:28:23,371 - client - > Message: test_message, queue: None
+2021-01-19 11:28:25,377 - client - < Response status code: 201
+2021-01-19 11:28:25,377 - client - > Message: test_message, queue: None
+2021-01-19 11:28:27,386 - client - < Response status code: 201
+2021-01-19 11:28:27,386 - client - > Message: test_message, queue: None
+2021-01-19 11:28:29,394 - client - < Response status code: 201
+2021-01-19 11:28:29,395 - client - > Message: test_message, queue: None
+2021-01-19 11:28:31,403 - client - < Response status code: 201
+2021-01-19 11:28:31,403 - client - > Message: test_message, queue: None
+2021-01-19 11:28:33,409 - client - < Response status code: 201
+2021-01-19 11:28:33,410 - client - > Message: test_message, queue: None
+2021-01-19 11:28:35,416 - client - < Response status code: 201
+2021-01-19 11:28:35,416 - client - > Message: test_message, queue: None
+2021-01-19 11:28:37,423 - client - < Response status code: 201
+2021-01-19 11:28:37,424 - client - > Message: test_message, queue: None
+2021-01-19 11:28:39,434 - client - < Response status code: 201
+2021-01-19 11:28:39,434 - client - > Message: test_message, queue: None
+2021-01-19 11:28:41,443 - client - < Response status code: 201
+2021-01-19 11:28:41,443 - client - > Message: test_message, queue: None
+2021-01-19 11:28:43,449 - client - < Response status code: 201
+2021-01-19 11:28:43,449 - client - > Message: test_message, queue: None
+2021-01-19 11:28:45,457 - client - < Response status code: 201
+2021-01-19 11:28:45,458 - client - > Message: test_message, queue: None
+2021-01-19 11:28:47,463 - client - < Response status code: 201
+2021-01-19 11:28:47,463 - client - > Message: test_message, queue: None
+2021-01-19 11:28:49,472 - client - < Response status code: 201
+2021-01-19 11:28:49,472 - client - > Message: test_message, queue: None
+2021-01-19 11:28:51,479 - client - < Response status code: 201
+2021-01-19 11:28:51,479 - client - > Message: test_message, queue: None
+2021-01-19 11:28:53,486 - client - < Response status code: 201
+2021-01-19 11:28:53,486 - client - > Message: test_message, queue: None
+2021-01-19 11:28:55,493 - client - < Response status code: 201
+2021-01-19 11:28:55,493 - client - > Message: test_message, queue: None
+2021-01-19 11:28:57,501 - client - < Response status code: 201
+2021-01-19 11:28:57,502 - client - > Message: test_message, queue: None
+2021-01-19 11:28:59,507 - client - < Response status code: 201
+2021-01-19 11:28:59,507 - client - > Message: test_message, queue: None
+2021-01-19 11:29:01,517 - client - < Response status code: 201
+2021-01-19 11:29:01,517 - client - > Message: test_message, queue: None
+2021-01-19 11:29:03,523 - client - < Response status code: 201
+2021-01-19 11:29:03,523 - client - > Message: test_message, queue: None
+2021-01-19 11:29:05,531 - client - < Response status code: 201
+2021-01-19 11:29:05,531 - client - > Message: test_message, queue: None
+2021-01-19 11:29:07,537 - client - < Response status code: 201
+2021-01-19 11:29:07,538 - client - > Queue: None
+2021-01-19 11:29:09,545 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:09,545 - client - > Queue: None
+2021-01-19 11:29:11,553 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:11,553 - client - > Queue: None
+2021-01-19 11:29:13,557 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:13,559 - client - > Queue: None
+2021-01-19 11:29:15,569 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:15,569 - client - > Queue: None
+2021-01-19 11:29:17,576 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:17,576 - client - > Queue: None
+2021-01-19 11:29:19,585 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:19,585 - client - > Queue: None
+2021-01-19 11:29:21,592 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:21,593 - client - > Queue: None
+2021-01-19 11:29:23,603 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:23,603 - client - > Queue: None
+2021-01-19 11:29:25,612 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:25,612 - client - > Queue: None
+2021-01-19 11:29:27,618 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:27,619 - client - > Queue: None
+2021-01-19 11:29:29,625 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:29,625 - client - > Queue: None
+2021-01-19 11:29:31,633 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:31,634 - client - > Queue: None
+2021-01-19 11:29:33,639 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:33,639 - client - > Queue: None
+2021-01-19 11:29:35,646 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:35,647 - client - > Queue: None
+2021-01-19 11:29:37,654 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:37,654 - client - > Queue: None
+2021-01-19 11:29:39,660 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:39,660 - client - > Queue: None
+2021-01-19 11:29:41,669 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:41,669 - client - > Queue: None
+2021-01-19 11:29:43,679 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:43,679 - client - > Queue: None
+2021-01-19 11:29:45,726 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:45,727 - client - > Queue: None
+2021-01-19 11:29:47,735 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:47,736 - client - > Queue: None
+2021-01-19 11:29:49,744 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:49,745 - client - > Queue: None
+2021-01-19 11:29:51,752 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:51,752 - client - > Queue: None
+2021-01-19 11:29:53,762 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:53,762 - client - > Queue: None
+2021-01-19 11:29:55,768 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:55,770 - client - > Queue: None
+2021-01-19 11:29:57,776 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:57,777 - client - > Queue: None
+2021-01-19 11:29:59,783 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:29:59,783 - client - > Queue: None
+2021-01-19 11:30:01,795 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:01,795 - client - > Queue: None
+2021-01-19 11:30:03,803 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:03,803 - client - > Queue: None
+2021-01-19 11:30:05,809 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:05,809 - client - > Queue: None
+2021-01-19 11:30:07,819 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:07,819 - client - > Queue: None
+2021-01-19 11:30:09,827 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:09,827 - client - > Queue: None
+2021-01-19 11:30:11,834 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:11,834 - client - > Queue: None
+2021-01-19 11:30:13,840 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:13,840 - client - > Queue: None
+2021-01-19 11:30:15,848 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:15,849 - client - > Queue: None
+2021-01-19 11:30:17,857 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:17,857 - client - > Queue: None
+2021-01-19 11:30:19,865 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:19,865 - client - > Queue: None
+2021-01-19 11:30:21,871 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:21,871 - client - > Queue: None
+2021-01-19 11:30:23,878 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:23,878 - client - > Queue: None
+2021-01-19 11:30:25,886 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:25,887 - client - > Queue: None
+2021-01-19 11:30:27,894 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:27,894 - client - > Queue: None
+2021-01-19 11:30:29,902 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:29,902 - client - > Queue: None
+2021-01-19 11:30:31,908 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:31,908 - client - > Queue: None
+2021-01-19 11:30:33,915 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:33,915 - client - > Queue: None
+2021-01-19 11:30:35,924 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:35,924 - client - > Queue: None
+2021-01-19 11:30:37,932 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:37,933 - client - > Queue: None
+2021-01-19 11:30:39,945 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:39,946 - client - > Queue: None
+2021-01-19 11:30:41,954 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:41,954 - client - > Queue: None
+2021-01-19 11:30:43,963 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:43,963 - client - > Queue: None
+2021-01-19 11:30:45,970 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:45,970 - client - > Queue: None
+2021-01-19 11:30:47,979 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:47,979 - client - > Queue: None
+2021-01-19 11:30:49,987 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:49,987 - client - > Queue: None
+2021-01-19 11:30:51,992 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:51,992 - client - > Queue: None
+2021-01-19 11:30:53,998 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:53,999 - client - > Queue: None
+2021-01-19 11:30:56,009 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:56,009 - client - > Queue: None
+2021-01-19 11:30:58,017 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:30:58,017 - client - > Queue: None
+2021-01-19 11:31:00,028 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:00,029 - client - > Queue: None
+2021-01-19 11:31:02,035 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:02,035 - client - > Queue: None
+2021-01-19 11:31:04,044 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:04,045 - client - > Queue: None
+2021-01-19 11:31:06,053 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:06,053 - client - > Queue: None
+2021-01-19 11:31:08,060 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:08,060 - client - > Queue: None
+2021-01-19 11:31:10,067 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:10,068 - client - > Queue: None
+2021-01-19 11:31:12,076 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:12,076 - client - > Queue: None
+2021-01-19 11:31:14,086 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:14,086 - client - > Queue: None
+2021-01-19 11:31:16,095 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:16,096 - client - > Queue: None
+2021-01-19 11:31:18,101 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:18,101 - client - > Queue: None
+2021-01-19 11:31:20,109 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:20,109 - client - > Queue: None
+2021-01-19 11:31:22,116 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:22,117 - client - > Queue: None
+2021-01-19 11:31:24,124 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:24,124 - client - > Queue: None
+2021-01-19 11:31:26,133 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:26,133 - client - > Queue: None
+2021-01-19 11:31:28,139 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:28,139 - client - > Queue: None
+2021-01-19 11:31:30,147 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:30,147 - client - > Queue: None
+2021-01-19 11:31:32,156 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:32,156 - client - > Queue: None
+2021-01-19 11:31:34,164 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:34,165 - client - > Queue: None
+2021-01-19 11:31:36,175 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:36,175 - client - > Queue: None
+2021-01-19 11:31:38,182 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:38,291 - client - > Queue: None
+2021-01-19 11:31:40,303 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:40,303 - client - > Queue: None
+2021-01-19 11:31:42,311 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:42,312 - client - > Queue: None
+2021-01-19 11:31:44,325 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:44,325 - client - > Queue: None
+2021-01-19 11:31:46,336 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:46,336 - client - > Queue: None
+2021-01-19 11:31:48,345 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:48,345 - client - > Queue: None
+2021-01-19 11:31:50,350 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:50,350 - client - > Queue: None
+2021-01-19 11:31:52,358 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:52,358 - client - > Queue: None
+2021-01-19 11:31:54,364 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:54,364 - client - > Queue: None
+2021-01-19 11:31:56,373 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:56,373 - client - > Queue: None
+2021-01-19 11:31:58,381 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:31:58,381 - client - > Queue: None
+2021-01-19 11:32:00,388 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:32:00,388 - client - > Queue: None
+2021-01-19 11:32:02,395 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:32:02,395 - client - > Queue: None
+2021-01-19 11:32:04,402 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:32:04,402 - client - > Queue: None
+2021-01-19 11:32:06,409 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:32:06,409 - client - > Queue: None
+2021-01-19 11:32:08,417 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:32:08,417 - client - > Queue: None
+2021-01-19 11:32:10,425 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:32:10,425 - client - > Queue: None
+2021-01-19 11:32:12,433 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:32:12,433 - client - > Queue: None
+2021-01-19 11:32:14,439 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:32:14,439 - client - > Queue: None
+2021-01-19 11:32:16,446 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:32:16,446 - client - > Queue: None
+2021-01-19 11:32:18,454 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:32:18,454 - client - > Queue: None
+2021-01-19 11:32:20,463 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:32:20,464 - client - > Queue: None
+2021-01-19 11:32:22,476 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:32:22,476 - client - > Queue: None
+2021-01-19 11:32:24,483 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:32:24,484 - client - > Queue: None
+2021-01-19 11:32:26,490 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:32:26,491 - client - > Queue: None
+2021-01-19 11:32:28,499 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:32:28,499 - client - > Queue: None
+2021-01-19 11:32:30,505 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:32:30,511 - conftest - Kill server
+2021-01-19 11:32:30,514 - conftest - Run server
+2021-01-19 11:32:30,516 - client - > Queue: None
+2021-01-19 11:32:32,526 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:32:32,526 - client - > Message: , queue: None
+2021-01-19 11:32:34,533 - client - < Response status code: 400
+2021-01-19 11:32:34,536 - conftest - Kill server
+2021-01-19 11:32:34,538 - conftest - Run server
+2021-01-19 11:32:34,541 - client - > Queue: None
+2021-01-19 11:32:36,553 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:32:36,554 - client - > Message: None, queue: None
+2021-01-19 11:32:38,562 - client - < Response status code: 400
+2021-01-19 11:32:38,564 - conftest - Kill server
+2021-01-19 11:32:38,567 - conftest - Run server
+2021-01-19 11:32:38,570 - client - > Queue: None
+2021-01-19 11:32:40,579 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:32:40,582 - client - > Message: test_message, queue: 2
+2021-01-19 11:32:42,596 - client - < Response status code: 201
+2021-01-19 11:32:42,596 - client - > Queue: 2
+2021-01-19 11:32:44,601 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:32:44,601 - client - > Queue: 1
+2021-01-19 11:32:46,608 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:32:46,608 - client - > Queue: 3
+2021-01-19 11:32:48,617 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:32:48,618 - conftest - Kill server
+2021-01-19 11:32:48,619 - conftest - Run server
+2021-01-19 11:32:48,621 - client - > Queue: None
+2021-01-19 11:32:50,632 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:32:50,633 - client - > Message: test_message, queue: 0
+2021-01-19 11:32:52,639 - client - < Response status code: 201
+2021-01-19 11:32:52,640 - conftest - Kill server
+2021-01-19 11:32:52,642 - conftest - Run server
+2021-01-19 11:32:52,644 - client - > Queue: None
+2021-01-19 11:32:54,652 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:32:54,653 - client - > Message: test_message, queue: 1
+2021-01-19 11:32:56,659 - client - < Response status code: 201
+2021-01-19 11:32:56,660 - conftest - Kill server
+2021-01-19 11:32:56,662 - conftest - Run server
+2021-01-19 11:32:56,664 - client - > Queue: None
+2021-01-19 11:32:58,672 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:32:58,673 - client - > Message: test_message, queue: 9999
+2021-01-19 11:33:00,680 - client - < Response status code: 201
+2021-01-19 11:33:00,681 - conftest - Kill server
+2021-01-19 11:33:00,682 - conftest - Run server
+2021-01-19 11:33:00,685 - client - > Queue: None
+2021-01-19 11:33:02,693 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:33:02,694 - client - > Message: test_message, queue: 10000
+2021-01-19 11:33:04,702 - client - < Response status code: 201
+2021-01-19 11:33:04,704 - conftest - Kill server
+2021-01-19 11:33:04,706 - conftest - Run server
+2021-01-19 11:33:04,708 - client - > Queue: None
+2021-01-19 11:33:06,715 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:33:06,716 - client - > Message: test_message, queue: 0
+2021-01-19 11:33:08,724 - client - < Response status code: 201
+2021-01-19 11:33:08,724 - client - > Queue: 0
+2021-01-19 11:33:10,730 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:33:10,732 - conftest - Kill server
+2021-01-19 11:33:10,734 - conftest - Run server
+2021-01-19 11:33:10,736 - client - > Queue: None
+2021-01-19 11:33:12,743 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:33:12,744 - client - > Message: test_message, queue: 1
+2021-01-19 11:33:14,753 - client - < Response status code: 201
+2021-01-19 11:33:14,753 - client - > Queue: 1
+2021-01-19 11:33:16,758 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:33:16,760 - conftest - Kill server
+2021-01-19 11:33:16,763 - conftest - Run server
+2021-01-19 11:33:16,766 - client - > Queue: None
+2021-01-19 11:33:18,777 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:33:18,778 - client - > Message: test_message, queue: 9999
+2021-01-19 11:33:20,783 - client - < Response status code: 201
+2021-01-19 11:33:20,783 - client - > Queue: 9999
+2021-01-19 11:33:22,789 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:33:22,790 - conftest - Kill server
+2021-01-19 11:33:22,792 - conftest - Run server
+2021-01-19 11:33:22,794 - client - > Queue: None
+2021-01-19 11:33:24,803 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:33:24,804 - client - > Message: test_message, queue: 10000
+2021-01-19 11:33:26,811 - client - < Response status code: 201
+2021-01-19 11:33:26,811 - client - > Queue: 10000
+2021-01-19 11:33:28,820 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:33:28,823 - conftest - Kill server
+2021-01-19 11:33:28,825 - conftest - Run server
+2021-01-19 11:33:28,828 - client - > Queue: None
+2021-01-19 11:33:30,834 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:33:30,835 - client - > Message: test_message, queue: 0
+2021-01-19 11:33:32,843 - client - < Response status code: 201
+2021-01-19 11:33:32,843 - client - > Queue: 0
+2021-01-19 11:33:34,849 - client - < Response status code: 204
+2021-01-19 11:33:34,850 - conftest - Kill server
+2021-01-19 11:33:34,851 - conftest - Run server
+2021-01-19 11:33:34,853 - client - > Queue: None
+2021-01-19 11:33:36,862 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:33:36,863 - client - > Message: test_message, queue: 1
+2021-01-19 11:33:38,870 - client - < Response status code: 201
+2021-01-19 11:33:38,870 - client - > Queue: 1
+2021-01-19 11:33:40,876 - client - < Response status code: 204
+2021-01-19 11:33:40,877 - conftest - Kill server
+2021-01-19 11:33:40,878 - conftest - Run server
+2021-01-19 11:33:40,881 - client - > Queue: None
+2021-01-19 11:33:42,892 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:33:42,893 - client - > Message: test_message, queue: 9999
+2021-01-19 11:33:44,901 - client - < Response status code: 201
+2021-01-19 11:33:44,901 - client - > Queue: 9999
+2021-01-19 11:33:46,909 - client - < Response status code: 204
+2021-01-19 11:33:46,910 - conftest - Kill server
+2021-01-19 11:33:46,912 - conftest - Run server
+2021-01-19 11:33:46,913 - client - > Queue: None
+2021-01-19 11:33:48,920 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:33:48,921 - client - > Message: test_message, queue: 10000
+2021-01-19 11:33:50,932 - client - < Response status code: 201
+2021-01-19 11:33:50,932 - client - > Queue: 10000
+2021-01-19 11:33:52,938 - client - < Response status code: 204
+2021-01-19 11:33:52,940 - conftest - Kill server
+2021-01-19 11:33:52,941 - conftest - Run server
+2021-01-19 11:33:52,943 - client - > Queue: None
+2021-01-19 11:33:54,951 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:33:54,952 - client - > Message: test_message, queue: -1
+2021-01-19 11:33:56,960 - client - < Response status code: 201
+2021-01-19 11:33:57,015 - conftest - Kill server
+2021-01-19 11:33:57,016 - conftest - Run server
+2021-01-19 11:33:57,018 - client - > Queue: None
+2021-01-19 11:33:59,029 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:33:59,030 - client - > Message: test_message, queue: 10001
+2021-01-19 11:34:01,037 - client - < Response status code: 400
+2021-01-19 11:34:01,038 - conftest - Kill server
+2021-01-19 11:34:01,039 - conftest - Run server
+2021-01-19 11:34:01,041 - client - > Queue: None
+2021-01-19 11:34:03,049 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:34:03,050 - client - > Queue: -1
+2021-01-19 11:34:05,057 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:34:05,070 - conftest - Kill server
+2021-01-19 11:34:05,073 - conftest - Run server
+2021-01-19 11:34:05,075 - client - > Queue: None
+2021-01-19 11:34:07,081 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:34:07,082 - client - > Queue: 10001
+2021-01-19 11:34:09,132 - conftest - Kill server
+2021-01-19 11:34:09,133 - conftest - Run server
+2021-01-19 11:34:09,135 - client - > Queue: None
+2021-01-19 11:34:11,141 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:34:11,142 - client - > Queue: -1
+2021-01-19 11:34:13,152 - client - < Response status code: 404
+2021-01-19 11:34:13,165 - conftest - Kill server
+2021-01-19 11:34:13,166 - conftest - Run server
+2021-01-19 11:34:13,168 - client - > Queue: None
+2021-01-19 11:34:15,180 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:34:15,181 - client - > Queue: 10001
+2021-01-19 11:34:17,188 - client - < Response status code: 400
+2021-01-19 11:34:17,190 - conftest - Kill server
+2021-01-19 11:34:17,191 - conftest - Run server
+2021-01-19 11:34:17,193 - client - > Queue: None
+2021-01-19 11:34:19,205 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:34:19,206 - client - > Message: test_message, queue: None
+2021-01-19 11:34:21,214 - client - < Response status code: 201
+2021-01-19 11:34:21,214 - client - > Queue: put message
+2021-01-19 11:34:23,221 - client - < Response status code: 500
+2021-01-19 11:34:23,234 - conftest - Kill server
+2021-01-19 11:34:23,236 - conftest - Run server
+2021-01-19 11:34:23,238 - client - > Queue: None
+2021-01-19 11:34:25,246 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:34:25,247 - client - > Message: test_message, queue: None
+2021-01-19 11:34:27,255 - client - < Response status code: 201
+2021-01-19 11:34:27,255 - client - > Queue: None
+2021-01-19 11:34:29,262 - client - < Response status code: 204
+2021-01-19 11:34:29,262 - client - > Queue: None
+2021-01-19 11:34:31,268 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:34:31,269 - conftest - Kill server
+2021-01-19 11:34:31,271 - conftest - Run server
+2021-01-19 11:34:31,272 - client - > Queue: None
+2021-01-19 11:34:33,282 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:34:33,282 - client - > Message: test_message, queue: 1
+2021-01-19 11:34:35,288 - client - < Response status code: 201
+2021-01-19 11:34:35,288 - client - > Queue: 1
+2021-01-19 11:34:37,293 - client - < Response status code: 204
+2021-01-19 11:34:37,293 - client - > Queue: 1
+2021-01-19 11:34:39,299 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:34:39,301 - conftest - Kill server
+2021-01-19 11:34:39,303 - conftest - Run server
+2021-01-19 11:34:39,305 - client - > Queue: None
+2021-01-19 11:34:41,313 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:34:41,314 - client - > Message: test_message, queue: 0
+2021-01-19 11:34:43,320 - client - < Response status code: 201
+2021-01-19 11:34:43,320 - client - > Message: test_message, queue: 1
+2021-01-19 11:34:45,325 - client - < Response status code: 201
+2021-01-19 11:34:45,326 - client - > Queue: None
+2021-01-19 11:34:47,331 - client - < Response status code: 204
+2021-01-19 11:34:47,331 - client - > Queue: None
+2021-01-19 11:34:49,338 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:34:49,338 - client - > Queue: 1
+2021-01-19 11:34:51,346 - client - < Response status code: 200, response body: test_message
+2021-01-19 11:34:51,347 - conftest - Kill server
+2021-01-19 11:34:51,348 - conftest - Run server
+2021-01-19 11:34:51,350 - client - > Queue: None
+2021-01-19 11:34:53,357 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:34:53,358 - client - > Message: oldest message, queue: None
+2021-01-19 11:34:55,365 - client - < Response status code: 201
+2021-01-19 11:34:55,365 - client - > Message: newest message, queue: None
+2021-01-19 11:34:57,373 - client - < Response status code: 201
+2021-01-19 11:34:57,373 - client - > Queue: None
+2021-01-19 11:34:59,379 - client - < Response status code: 204
+2021-01-19 11:34:59,379 - client - > Queue: None
+2021-01-19 11:35:01,387 - client - < Response status code: 200, response body: newest message
+2021-01-19 11:35:01,391 - conftest - Kill server
+2021-01-19 11:35:01,393 - conftest - Run server
+2021-01-19 11:35:01,394 - client - > Queue: None
+2021-01-19 11:35:03,402 - client - < Response status code: 200, response body: no messages
+2021-01-19 11:35:03,403 - client - > Queue: None
+2021-01-19 11:35:05,411 - client - < Response status code: 404
+2021-01-19 11:35:05,412 - conftest - Kill server

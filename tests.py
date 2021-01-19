@@ -9,10 +9,12 @@ MAX_MESSAGES = 100
 TEST_MESSAGE = "test_message"
 NO_MESSAGES = "no messages"
 
+
 class TestServer:
     def test_run_server(self, run_stop_server_function):
         client = Rest()
-        _, message = client.get()
+        status_code, message = client.get()
+        assert status_code == 200
         assert message == 'no messages'
 
 
@@ -20,13 +22,15 @@ class TestGet:
     def test_message_returning_get(self, run_stop_server_function):
         client = Rest()
         client.post(TEST_MESSAGE)
-        _, message = client.get()
+        status_code, message = client.get()
+        assert status_code == 200
         assert message == TEST_MESSAGE
 
     def test_default_queue_number_zero_get(self, run_stop_server_function):
         client = Rest()
         client.post(TEST_MESSAGE)
-        _, message = client.get(0)
+        status_code, message = client.get(0)
+        assert status_code == 200
         assert message == TEST_MESSAGE
 
     def test_message_delete_after_returning_get(
@@ -34,20 +38,23 @@ class TestGet:
         client = Rest()
         client.post(TEST_MESSAGE)
         client.get()
-        _, message = client.get()
+        status_code, message = client.get()
+        assert status_code == 200
         assert message == NO_MESSAGES
 
     def test_oldest_message_returning_get(self, run_stop_server_function):
         client = Rest()
         client.post("oldest message")
         client.post("newest message")
-        _, message = client.get()
+        status_code, message = client.get()
+        assert status_code == 200
         assert message == "oldest message"
 
     def test_ignore_request_without_messages_in_queue_get(
             self, run_stop_server_function):
         client = Rest()
-        _, message = client.get()
+        status_code, message = client.get()
+        assert status_code == 200
         assert message == NO_MESSAGES
 
     def test_get_dont_delete_all_messages(self, run_stop_server_function):
@@ -56,32 +63,46 @@ class TestGet:
         client.post(TEST_MESSAGE)
         client.post(TEST_MESSAGE)
         client.get()
-        _, message = client.get()
+        status_code, message = client.get()
+        assert status_code == 200
         assert message == TEST_MESSAGE
 
 
 class TestPost:
     def test_without_alias_post(self, run_stop_server_function):
         client = Rest()
-        _, message = client.post(TEST_MESSAGE)
+        status_code, message = client.post(TEST_MESSAGE)
+        assert status_code == 201
         assert message == 'Ok'
 
     def test_default_alias_value_zero_post(self, run_stop_server_function):
         client = Rest()
         client.post(TEST_MESSAGE)
-        _, message = client.get(0)
+        status_code, message = client.get(0)
+        assert status_code == 200
         assert message == TEST_MESSAGE
 
     def test_valid_limit_queues_post(self, run_stop_server_function):
         client = Rest()
         for index in range(MAX_QUEUES):
-            _, message = client.post(TEST_MESSAGE, index)
+            status_code, message = client.post(TEST_MESSAGE, index)
+            assert status_code == 201
             assert message == 'Ok'
+
+    def test_invalid_limit_queues_post(self, run_stop_server_function):
+        client = Rest()
+        for index in range(MAX_QUEUES):
+            client.post(TEST_MESSAGE, index)
+        client.post(TEST_MESSAGE, MAX_QUEUES + 1)
+        status_code, message = client.get(MAX_QUEUES + 1)
+        assert status_code == 200
+        assert message == NO_MESSAGES
 
     def test_valid_limit_messages_post(self, run_stop_server_function):
         client = Rest()
         for index in range(MAX_MESSAGES):
-            _, message = client.post(TEST_MESSAGE)
+            status_code, message = client.post(TEST_MESSAGE)
+            assert status_code == 201
             assert message == 'Ok'
 
     def test_invalid_limit_messages_post(self, run_stop_server_function):
@@ -90,7 +111,8 @@ class TestPost:
             client.post(TEST_MESSAGE)
         for index in range(MAX_MESSAGES):
             client.get()
-        _, message = client.get()
+        status_code, message = client.get()
+        assert status_code == 200
         assert message == NO_MESSAGES
 
     def test_empty_message_post(self, run_stop_server_function):
@@ -110,13 +132,16 @@ class TestPost:
 
         client.post(TEST_MESSAGE, 2)
 
-        _, message = client.get(2)
+        status_code, message = client.get(2)
+        assert status_code == 200
         assert message == TEST_MESSAGE
 
-        _, message = client.get(1)
+        status_code, message = client.get(1)
+        assert status_code == 200
         assert message == NO_MESSAGES
 
-        _, message = client.get(3)
+        status_code, message = client.get(3)
+        assert status_code == 200
         assert message == NO_MESSAGES
 
 
@@ -125,7 +150,8 @@ class TestAliasNumberBorders:
     def test_valid_queue_alias_number_post(
             self, run_stop_server_function, valid_queue_border):
         client = Rest()
-        _, message = client.post(TEST_MESSAGE, valid_queue_border)
+        status_code, message = client.post(TEST_MESSAGE, valid_queue_border)
+        assert status_code == 201
         assert message == 'Ok'
 
     @pytest.mark.parametrize("valid_queue_border", VALID_QUEUE_BORDER_VALUES)
@@ -133,7 +159,8 @@ class TestAliasNumberBorders:
             self, run_stop_server_function, valid_queue_border):
         client = Rest()
         client.post(TEST_MESSAGE, valid_queue_border)
-        _, message = client.get(valid_queue_border)
+        status_code, message = client.get(valid_queue_border)
+        assert status_code == 200
         assert message == TEST_MESSAGE
 
     @pytest.mark.parametrize("valid_queue_border", VALID_QUEUE_BORDER_VALUES)
@@ -141,7 +168,8 @@ class TestAliasNumberBorders:
             self, run_stop_server_function, valid_queue_border):
         client = Rest()
         client.post(TEST_MESSAGE, valid_queue_border)
-        _, message = client.delete(valid_queue_border)
+        status_code, message = client.delete(valid_queue_border)
+        assert status_code == 204
         assert message == 'Ok'
 
     @pytest.mark.parametrize(
@@ -186,14 +214,16 @@ class TestDelete:
         client = Rest()
         client.post(TEST_MESSAGE)
         client.delete()
-        _, message = client.get()
+        status_code, message = client.get()
+        assert status_code == 200
         assert message == NO_MESSAGES
 
     def test_message_with_queue_delete(self, run_stop_server_function):
         client = Rest()
         client.post(TEST_MESSAGE, 1)
         client.delete(1)
-        _, message = client.get(1)
+        status_code, message = client.get(1)
+        assert status_code == 200
         assert message == NO_MESSAGES
 
     def test_default_alias_zero_delete(self, run_stop_server_function):
@@ -201,10 +231,12 @@ class TestDelete:
         client.post(TEST_MESSAGE, 0)
         client.post(TEST_MESSAGE, 1)
         client.delete()
-        _, message = client.get()
+        status_code, message = client.get()
+        assert status_code == 200
         assert message == NO_MESSAGES
 
-        _, message = client.get(1)
+        status_code, message = client.get(1)
+        assert status_code == 200
         assert message == TEST_MESSAGE
 
     def test_oldest_message_delete(self, run_stop_server_function):
@@ -212,7 +244,8 @@ class TestDelete:
         client.post("oldest message")
         client.post("newest message")
         client.delete()
-        _, message = client.get()
+        status_code, message = client.get()
+        assert status_code == 200
         assert message == "newest message"
 
     def test_no_message_in_queue_delete(self, run_stop_server_function):

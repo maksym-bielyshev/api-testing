@@ -13,6 +13,7 @@
 
  - server module must supports up to 100 different queues
         TestPost.test_valid_limit_queues_post
+        TestPost.test_invalid_limit_queues_post
         TestPost.test_duplicate_queues_post
 
  - server may ignore the message, if the target queue is full (has more than 100 messages)
@@ -40,16 +41,17 @@
  - queue alias is a number from '0' to '10000'
  - queue alias is optional (default value is '0')
  - oldest message is updated
+        TestPut.test_put_message
  - if there is no message in the queue, server return 404
 
  1.4. DELETE request to retrieve and delete oldest message from the internal message queue:
  - queue alias is a number from '0' to '10000'
-        TestDelete.test_message_without_queue_delete
         TestDelete.test_message_with_queue_delete
         TestBorders.test_valid_queue_alias_number_delete
         TestBorders.test_invalid_queue_alias_number_delete
 
  - queue alias is optional (default value is '0')
+        TestDelete.test_message_without_queue_delete
         TestDelete.test_default_alias_zero_delete
 
  - oldest message is deleted

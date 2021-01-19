@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Test Report</title>
+    <style>body {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  /* do not increase min-width as some may use split screens */
+  min-width: 800px;
+  color: #999;
+}
+
+h1 {
+  font-size: 24px;
+  color: black;
+}
+
+h2 {
+  font-size: 16px;
+  color: black;
+}
+
+p {
+  color: black;
+}
+
+a {
+  color: #999;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+/******************************
+ * SUMMARY INFORMATION
+ ******************************/
+#environment td {
+  padding: 5px;
+  border: 1px solid #E6E6E6;
+}
+#environment tr:nth-child(odd) {
+  background-color: #f6f6f6;
+}
+
+/******************************
+ * TEST RESULT COLORS
+ ******************************/
+span.passed,
+.passed .col-result {
+  color: green;
+}
+
+span.skipped,
+span.xfailed,
+span.rerun,
+.skipped .col-result,
+.xfailed .col-result,
+.rerun .col-result {
+  color: orange;
+}
+
+span.error,
+span.failed,
+span.xpassed,
+.error .col-result,
+.failed .col-result,
+.xpassed .col-result {
+  color: red;
+}
+
+/******************************
+ * RESULTS TABLE
+ *
+ * 1. Table Layout
+ * 2. Extra
+ * 3. Sorting items
+ *
+ ******************************/
+/*------------------
+ * 1. Table Layout
+ *------------------*/
+#results-table {
+  border: 1px solid #e6e6e6;
+  color: #999;
+  font-size: 12px;
+  width: 100%;
+}
+#results-table th,
+#results-table td {
+  padding: 5px;
+  border: 1px solid #E6E6E6;
+  text-align: left;
+}
+#results-table th {
+  font-weight: bold;
+}
+
+/*------------------
+ * 2. Extra
+ *------------------*/
+.log {
+  background-color: #e6e6e6;
+  border: 1px solid #e6e6e6;
+  color: black;
+  display: block;
+  font-family: "Courier New", Courier, monospace;
+  height: 230px;
+  overflow-y: scroll;
+  padding: 5px;
+  white-space: pre-wrap;
+}
+.log:only-child {
+  height: inherit;
+}
+
+div.image {
+  border: 1px solid #e6e6e6;
+  float: right;
+  height: 240px;
+  margin-left: 5px;
+  overflow: hidden;
+  width: 320px;
+}
+div.image img {
+  width: 320px;
+}
+
+div.video {
+  border: 1px solid #e6e6e6;
+  float: right;
+  height: 240px;
+  margin-left: 5px;
+  overflow: hidden;
+  width: 320px;
+}
+div.video video {
+  overflow: hidden;
+  width: 320px;
+  height: 240px;
+}
+
+.collapsed {
+  display: none;
+}
+
+.expander::after {
+  content: " (show details)";
+  color: #BBB;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.collapser::after {
+  content: " (hide details)";
+  color: #BBB;
+  font-style: italic;
+  cursor: pointer;
+}
+
+/*------------------
+ * 3. Sorting items
+ *------------------*/
+.sortable {
+  cursor: pointer;
+}
+
+.sort-icon {
+  font-size: 0px;
+  float: left;
+  margin-right: 5px;
+  margin-top: 5px;
+  /*triangle*/
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+}
+.inactive .sort-icon {
+  /*finish triangle*/
+  border-top: 8px solid #E6E6E6;
+}
+.asc.active .sort-icon {
+  /*finish triangle*/
+  border-bottom: 8px solid #999;
+}
+.desc.active .sort-icon {
+  /*finish triangle*/
+  border-top: 8px solid #999;
+}
+</style></head>
+  <body onLoad="init()">
+    <script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) { // eslint-disable-line no-redeclare
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function findAll(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sortColumn(elem) {
+    toggleSortStates(elem);
+    const colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    let key;
+    if (elem.classList.contains('result')) {
+        key = keyResult;
+    } else if (elem.classList.contains('links')) {
+        key = keyLink;
+    } else {
+        key = keyAlpha;
+    }
+    sortTable(elem, key(colIndex));
+}
+
+function showAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(showExtras);
+}
+
+function hideAllExtras() { // eslint-disable-line no-unused-vars
+    findAll('.col-result').forEach(hideExtras);
+}
+
+function showExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.remove('collapsed');
+    expandcollapse.classList.remove('expander');
+    expandcollapse.classList.add('collapser');
+}
+
+function hideExtras(colresultElem) {
+    const extras = colresultElem.parentNode.nextElementSibling;
+    const expandcollapse = colresultElem.firstElementChild;
+    extras.classList.add('collapsed');
+    expandcollapse.classList.remove('collapser');
+    expandcollapse.classList.add('expander');
+}
+
+function showFilters() {
+    const filterItems = document.getElementsByClassName('filter');
+    for (let i = 0; i < filterItems.length; i++)
+        filterItems[i].hidden = false;
+}
+
+function addCollapse() {
+    // Add links for show/hide all
+    const resulttable = find('table#results-table');
+    const showhideall = document.createElement('p');
+    showhideall.innerHTML = '<a href="javascript:showAllExtras()">Show all details</a> / ' +
+                            '<a href="javascript:hideAllExtras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    findAll('.col-result').forEach(function(elem) {
+        const collapsed = getQueryParameter('collapsed') || 'Passed';
+        const extras = elem.parentNode.nextElementSibling;
+        const expandcollapse = document.createElement('span');
+        if (extras.classList.contains('collapsed')) {
+            expandcollapse.classList.add('expander');
+        } else if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add('collapsed');
+            expandcollapse.classList.add('expander');
+        } else {
+            expandcollapse.classList.add('collapser');
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener('click', function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains('collapsed')) {
+                showExtras(event.currentTarget);
+            } else {
+                hideExtras(event.currentTarget);
+            }
+        });
+    });
+}
+
+function getQueryParameter(name) {
+    const match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () { // eslint-disable-line no-unused-vars
+    resetSortHeaders();
+
+    addCollapse();
+
+    showFilters();
+
+    sortColumn(find('.initial-sort'));
+
+    findAll('.sortable').forEach(function(elem) {
+        elem.addEventListener('click',
+            function() {
+                sortColumn(elem);
+            }, false);
+    });
+}
+
+function sortTable(clicked, keyFunc) {
+    const rows = findAll('.results-table-row');
+    const reversed = !clicked.classList.contains('asc');
+    const sortedRows = sort(rows, keyFunc, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    const thead = document.getElementById('results-table-head');
+    document.getElementById('results-table').remove();
+    const parent = document.createElement('table');
+    parent.id = 'results-table';
+    parent.appendChild(thead);
+    sortedRows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName('BODY')[0].appendChild(parent);
+}
+
+function sort(items, keyFunc, reversed) {
+    const sortArray = items.map(function(item, i) {
+        return [keyFunc(item), i];
+    });
+
+    sortArray.sort(function(a, b) {
+        const keyA = a[0];
+        const keyB = b[0];
+
+        if (keyA == keyB) return 0;
+
+        if (reversed) {
+            return keyA < keyB ? 1 : -1;
+        } else {
+            return keyA > keyB ? 1 : -1;
+        }
+    });
+
+    return sortArray.map(function(item) {
+        const index = item[1];
+        return items[index];
+    });
+}
+
+function keyAlpha(colIndex) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[colIndex].firstChild.data.toLowerCase();
+    };
+}
+
+function keyLink(colIndex) {
+    return function(elem) {
+        const dataCell = elem.childNodes[1].childNodes[colIndex].firstChild;
+        return dataCell == null ? '' : dataCell.innerText.toLowerCase();
+    };
+}
+
+function keyResult(colIndex) {
+    return function(elem) {
+        const strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+            'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[colIndex].firstChild.data);
+    };
+}
+
+function resetSortHeaders() {
+    findAll('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    findAll('.sortable').forEach(function(elem) {
+        const icon = document.createElement('div');
+        icon.className = 'sort-icon';
+        icon.textContent = 'vvv';
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove('desc', 'active');
+        elem.classList.add('asc', 'inactive');
+    });
+}
+
+function toggleSortStates(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        resetSortHeaders();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function isAllRowsHidden(value) {
+    return value.hidden == false;
+}
+
+function filterTable(elem) { // eslint-disable-line no-unused-vars
+    const outcomeAtt = 'data-test-result';
+    const outcome = elem.getAttribute(outcomeAtt);
+    const classOutcome = outcome + ' results-table-row';
+    const outcomeRows = document.getElementsByClassName(classOutcome);
+
+    for(let i = 0; i < outcomeRows.length; i++){
+        outcomeRows[i].hidden = !elem.checked;
+    }
+
+    const rows = findAll('.results-table-row').filter(isAllRowsHidden);
+    const allRowsHidden = rows.length == 0 ? true : false;
+    const notFoundMessage = document.getElementById('not-found-message');
+    notFoundMessage.hidden = !allRowsHidden;
+}
+</script>
+    <h1>report.html</h1>
+    <p>Report generated on 19-Jan-2021 at 11:35:05 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v3.1.1</p>
+    <h2>Environment</h2>
+    <table id="environment">
+      <tr>
+        <td>JAVA_HOME</td>
+        <td>C:\Program Files (x86)\Java\jre1.8.0_261</td></tr>
+      <tr>
+        <td>Packages</td>
+        <td>{"pluggy": "0.13.1", "py": "1.9.0", "pytest": "6.0.1"}</td></tr>
+      <tr>
+        <td>Platform</td>
+        <td>Windows-10-10.0.18362-SP0</td></tr>
+      <tr>
+        <td>Plugins</td>
+        <td>{"allure-pytest": "2.8.17", "html": "3.1.1", "metadata": "1.11.0"}</td></tr>
+      <tr>
+        <td>Python</td>
+        <td>3.6.0</td></tr></table>
+    <h2>Summary</h2>
+    <p>40 tests ran in 1231.62 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="passed">35 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="failed">5 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filterTable(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+    <h2>Results</h2>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable result initial-sort" col="result">Result</th>
+          <th class="sortable" col="name">Test</th>
+          <th class="sortable" col="duration">Duration</th>
+          <th class="sortable links" col="links">Links</th></tr>
+        <tr hidden="true" id="not-found-message">
+          <th colspan="4">No results found. Try to check the filters</th></tr></thead>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_invalid_queue_alias_number_post[-1]</td>
+          <td class="col-duration">4.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;tests.TestAliasNumberBorders object at 0x000001FB56438D68&gt;, run_stop_server_function = None, invalid_queue_border = -1<br/><br/>    @pytest.mark.parametrize(<br/>        &quot;invalid_queue_border&quot;, INVALID_QUEUE_BORDER_VALUES)<br/>    def test_invalid_queue_alias_number_post(<br/>            self, run_stop_server_function, invalid_queue_border):<br/>        client = Rest()<br/>        status_code, message = client.post(TEST_MESSAGE, invalid_queue_border)<br/>&gt;       assert status_code == 400<br/><span class="error">E       assert 201 == 400</span><br/><br/>tests.py:181: AssertionError<br/> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: -1
+INFO     client:client.py:22 &lt; Response status code: 201<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_invalid_queue_alias_number_get[-1]</td>
+          <td class="col-duration">4.01</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;tests.TestAliasNumberBorders object at 0x000001FB5645DE48&gt;, run_stop_server_function = None, invalid_queue_border = -1<br/><br/>    @pytest.mark.parametrize(<br/>        &quot;invalid_queue_border&quot;, INVALID_QUEUE_BORDER_VALUES)<br/>    def test_invalid_queue_alias_number_get(<br/>            self, run_stop_server_function, invalid_queue_border):<br/>        client = Rest()<br/>        status_code, message = client.get(invalid_queue_border)<br/>&gt;       assert status_code == 400<br/><span class="error">E       assert 200 == 400</span><br/><br/>tests.py:190: AssertionError<br/> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:27 &gt; Queue: -1
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_invalid_queue_alias_number_get[10001]</td>
+          <td class="col-duration">4.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;tests.TestAliasNumberBorders object at 0x000001FB55AB5240&gt;, run_stop_server_function = None, invalid_queue_border = 10001<br/><br/>    @pytest.mark.parametrize(<br/>        &quot;invalid_queue_border&quot;, INVALID_QUEUE_BORDER_VALUES)<br/>    def test_invalid_queue_alias_number_get(<br/>            self, run_stop_server_function, invalid_queue_border):<br/>        client = Rest()<br/>&gt;       status_code, message = client.get(invalid_queue_border)<br/><br/>tests.py:189: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>client.py:35: in get<br/>    json_data = json.loads(response.text)<br/>..\..\appdata\local\programs\python\python36\lib\json\__init__.py:354: in loads<br/>    return _default_decoder.decode(s)<br/>..\..\appdata\local\programs\python\python36\lib\json\decoder.py:339: in decode<br/>    obj, end = self.raw_decode(s, idx=_w(s, 0).end())<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;json.decoder.JSONDecoder object at 0x000001FB555A2780&gt;, s = &#x27;&#x27;, idx = 0<br/><br/>    def raw_decode(self, s, idx=0):<br/>        &quot;&quot;&quot;Decode a JSON document from ``s`` (a ``str`` beginning with<br/>        a JSON document) and return a 2-tuple of the Python<br/>        representation and the index in ``s`` where the document ended.<br/>    <br/>        This can be used to decode a JSON document from a string that may<br/>        have extraneous data at the end.<br/>    <br/>        &quot;&quot;&quot;<br/>        try:<br/>            obj, end = self.scan_once(s, idx)<br/>        except StopIteration as err:<br/>&gt;           raise JSONDecodeError(&quot;Expecting value&quot;, s, err.value) from None<br/><span class="error">E           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)</span><br/><br/>..\..\appdata\local\programs\python\python36\lib\json\decoder.py:357: JSONDecodeError<br/> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:27 &gt; Queue: 10001<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_invalid_queue_alias_number_delete[-1]</td>
+          <td class="col-duration">4.01</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;tests.TestAliasNumberBorders object at 0x000001FB55C0D470&gt;, run_stop_server_function = None, invalid_queue_border = -1<br/><br/>    @pytest.mark.parametrize(<br/>        &quot;invalid_queue_border&quot;, INVALID_QUEUE_BORDER_VALUES)<br/>    def test_invalid_queue_alias_number_delete(<br/>            self, run_stop_server_function, invalid_queue_border):<br/>        client = Rest()<br/>        status_code, message = client.delete(invalid_queue_border)<br/>&gt;       assert status_code == 400<br/><span class="error">E       assert 404 == 400</span><br/><br/>tests.py:199: AssertionError<br/> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:56 &gt; Queue: -1
+INFO     client:client.py:64 &lt; Response status code: 404<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">tests.py::TestPut::test_put_message</td>
+          <td class="col-duration">6.03</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;tests.TestPut object at 0x000001FB55BF9828&gt;, run_stop_server_function = None<br/><br/>    def test_put_message(self, run_stop_server_function):<br/>        client = Rest()<br/>        client.post(TEST_MESSAGE)<br/>        status_code, message = client.put(&quot;put message&quot;)<br/>&gt;       assert status_code == 200<br/><span class="error">E       assert 500 == 200</span><br/><br/>tests.py:208: AssertionError<br/> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:43 &gt; Queue: put message
+INFO     client:client.py:51 &lt; Response status code: 500<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestServer::test_run_server</td>
+          <td class="col-duration">4.03</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestGet::test_message_returning_get</td>
+          <td class="col-duration">6.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestGet::test_default_queue_number_zero_get</td>
+          <td class="col-duration">6.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:27 &gt; Queue: 0
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestGet::test_message_delete_after_returning_get</td>
+          <td class="col-duration">8.03</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestGet::test_oldest_message_returning_get</td>
+          <td class="col-duration">8.03</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: oldest message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: newest message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: oldest message<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestGet::test_ignore_request_without_messages_in_queue_get</td>
+          <td class="col-duration">4.01</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestGet::test_get_dont_delete_all_messages</td>
+          <td class="col-duration">10.04</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestPost::test_without_alias_post</td>
+          <td class="col-duration">4.01</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestPost::test_default_alias_value_zero_post</td>
+          <td class="col-duration">6.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:27 &gt; Queue: 0
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestPost::test_valid_limit_queues_post</td>
+          <td class="col-duration">202.79</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 0
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 1
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 2
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 3
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 4
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 5
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 6
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 7
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 8
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 9
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 10
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 11
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 12
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 13
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 14
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 15
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 16
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 17
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 18
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 19
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 20
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 21
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 22
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 23
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 24
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 25
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 26
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 27
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 28
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 29
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 30
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 31
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 32
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 33
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 34
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 35
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 36
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 37
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 38
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 39
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 40
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 41
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 42
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 43
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 44
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 45
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 46
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 47
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 48
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 49
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 50
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 51
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 52
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 53
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 54
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 55
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 56
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 57
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 58
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 59
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 60
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 61
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 62
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 63
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 64
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 65
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 66
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 67
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 68
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 69
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 70
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 71
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 72
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 73
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 74
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 75
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 76
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 77
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 78
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 79
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 80
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 81
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 82
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 83
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 84
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 85
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 86
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 87
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 88
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 89
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 90
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 91
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 92
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 93
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 94
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 95
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 96
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 97
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 98
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 99
+INFO     client:client.py:22 &lt; Response status code: 201<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestPost::test_invalid_limit_queues_post</td>
+          <td class="col-duration">206.84</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 0
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 1
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 2
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 3
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 4
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 5
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 6
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 7
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 8
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 9
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 10
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 11
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 12
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 13
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 14
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 15
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 16
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 17
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 18
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 19
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 20
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 21
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 22
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 23
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 24
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 25
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 26
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 27
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 28
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 29
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 30
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 31
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 32
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 33
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 34
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 35
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 36
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 37
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 38
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 39
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 40
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 41
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 42
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 43
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 44
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 45
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 46
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 47
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 48
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 49
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 50
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 51
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 52
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 53
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 54
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 55
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 56
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 57
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 58
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 59
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 60
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 61
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 62
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 63
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 64
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 65
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 66
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 67
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 68
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 69
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 70
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 71
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 72
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 73
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 74
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 75
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 76
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 77
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 78
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 79
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 80
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 81
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 82
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 83
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 84
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 85
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 86
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 87
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 88
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 89
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 90
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 91
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 92
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 93
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 94
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 95
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 96
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 97
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 98
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 99
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 101
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:27 &gt; Queue: 101
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestPost::test_valid_limit_messages_post</td>
+          <td class="col-duration">202.80</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestPost::test_invalid_limit_messages_post</td>
+          <td class="col-duration">407.82</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> ------------------------------Captured stderr call------------------------------ <br/>127.0.0.1 - - [19/Jan/2021 11:25:44] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:25:46] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:25:48] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:25:50] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:25:52] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:25:54] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:25:56] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:25:58] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:00] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:02] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:04] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:06] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:08] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:10] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:12] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:14] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:16] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:18] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:20] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:22] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:24] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:26] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:28] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:30] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:32] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:34] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:36] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:38] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:40] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:42] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:44] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:46] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:48] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:50] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:52] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:54] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:56] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:26:58] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:01] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:03] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:05] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:07] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:09] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:11] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:13] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:15] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:17] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:19] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:21] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:23] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:25] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:27] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:29] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:31] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:33] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:35] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:37] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:39] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:41] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:43] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:45] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:47] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:49] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:51] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:53] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:55] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:57] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:27:59] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:01] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:03] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:05] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:07] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:09] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:11] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:13] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:15] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:17] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:19] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:21] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:23] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:25] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:27] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:29] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:31] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:33] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:35] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:37] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:39] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:41] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:43] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:45] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:47] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:49] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:51] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:53] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:55] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:57] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:28:59] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:29:01] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:29:03] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:29:05] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:29:07] &quot;POST / HTTP/1.1&quot; 201 -
+127.0.0.1 - - [19/Jan/2021 11:29:09] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:11] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:13] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:15] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:17] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:19] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:21] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:23] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:25] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:27] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:29] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:31] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:33] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:35] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:37] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:39] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:41] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:43] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:45] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:47] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:49] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:51] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:53] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:55] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:57] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:29:59] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:30:01] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:30:03] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:30:05] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:30:07] &quot;GET / HTTP/1.1&quot; 200 -
+127.0.0.1 - - [19/Jan/2021 11:30:09] &quot;GET / HTTP/1.1&quot; 200 -
+<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestPost::test_empty_message_post</td>
+          <td class="col-duration">4.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: , queue: None
+INFO     client:client.py:22 &lt; Response status code: 400<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestPost::test_without_message_post</td>
+          <td class="col-duration">4.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: None, queue: None
+INFO     client:client.py:22 &lt; Response status code: 400<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestPost::test_duplicate_queues_post</td>
+          <td class="col-duration">10.05</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 2
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:27 &gt; Queue: 2
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message
+INFO     client:client.py:27 &gt; Queue: 1
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages
+INFO     client:client.py:27 &gt; Queue: 3
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_valid_queue_alias_number_post[0]</td>
+          <td class="col-duration">4.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 0
+INFO     client:client.py:22 &lt; Response status code: 201<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_valid_queue_alias_number_post[1]</td>
+          <td class="col-duration">4.01</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 1
+INFO     client:client.py:22 &lt; Response status code: 201<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_valid_queue_alias_number_post[9999]</td>
+          <td class="col-duration">4.01</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 9999
+INFO     client:client.py:22 &lt; Response status code: 201<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_valid_queue_alias_number_post[10000]</td>
+          <td class="col-duration">4.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 10000
+INFO     client:client.py:22 &lt; Response status code: 201<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_valid_queue_alias_number_get[0]</td>
+          <td class="col-duration">6.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 0
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:27 &gt; Queue: 0
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_valid_queue_alias_number_get[1]</td>
+          <td class="col-duration">6.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 1
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:27 &gt; Queue: 1
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_valid_queue_alias_number_get[9999]</td>
+          <td class="col-duration">6.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 9999
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:27 &gt; Queue: 9999
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_valid_queue_alias_number_get[10000]</td>
+          <td class="col-duration">6.03</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 10000
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:27 &gt; Queue: 10000
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_valid_queue_alias_number_delete[0]</td>
+          <td class="col-duration">6.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 0
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:56 &gt; Queue: 0
+INFO     client:client.py:64 &lt; Response status code: 204<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_valid_queue_alias_number_delete[1]</td>
+          <td class="col-duration">6.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 1
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:56 &gt; Queue: 1
+INFO     client:client.py:64 &lt; Response status code: 204<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_valid_queue_alias_number_delete[9999]</td>
+          <td class="col-duration">6.03</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 9999
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:56 &gt; Queue: 9999
+INFO     client:client.py:64 &lt; Response status code: 204<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_valid_queue_alias_number_delete[10000]</td>
+          <td class="col-duration">6.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 10000
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:56 &gt; Queue: 10000
+INFO     client:client.py:64 &lt; Response status code: 204<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_invalid_queue_alias_number_post[10001]</td>
+          <td class="col-duration">4.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 10001
+INFO     client:client.py:22 &lt; Response status code: 400<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestAliasNumberBorders::test_invalid_queue_alias_number_delete[10001]</td>
+          <td class="col-duration">4.02</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:56 &gt; Queue: 10001
+INFO     client:client.py:64 &lt; Response status code: 400<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestDelete::test_message_without_queue_delete</td>
+          <td class="col-duration">8.03</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:56 &gt; Queue: None
+INFO     client:client.py:64 &lt; Response status code: 204
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestDelete::test_message_with_queue_delete</td>
+          <td class="col-duration">8.03</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 1
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:56 &gt; Queue: 1
+INFO     client:client.py:64 &lt; Response status code: 204
+INFO     client:client.py:27 &gt; Queue: 1
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestDelete::test_default_alias_zero_delete</td>
+          <td class="col-duration">12.04</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: test_message, queue: 0
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: test_message, queue: 1
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:56 &gt; Queue: None
+INFO     client:client.py:64 &lt; Response status code: 204
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages
+INFO     client:client.py:27 &gt; Queue: 1
+INFO     client:client.py:37 &lt; Response status code: 200, response body: test_message<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestDelete::test_oldest_message_delete</td>
+          <td class="col-duration">10.03</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:12 &gt; Message: oldest message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:12 &gt; Message: newest message, queue: None
+INFO     client:client.py:22 &lt; Response status code: 201
+INFO     client:client.py:56 &gt; Queue: None
+INFO     client:client.py:64 &lt; Response status code: 204
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: newest message<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">tests.py::TestDelete::test_no_message_in_queue_delete</td>
+          <td class="col-duration">4.01</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> -------------------------------Captured log setup------------------------------- <br/>INFO     conftest:conftest.py:14 Run server
+INFO     client:client.py:27 &gt; Queue: None
+INFO     client:client.py:37 &lt; Response status code: 200, response body: no messages<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     client:client.py:56 &gt; Queue: None
+INFO     client:client.py:64 &lt; Response status code: 404<br/> -----------------------------Captured log teardown------------------------------ <br/>INFO     conftest:conftest.py:32 Kill server<br/></div></td></tr></tbody></table></body></html>
