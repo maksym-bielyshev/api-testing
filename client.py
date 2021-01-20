@@ -1,5 +1,4 @@
 import json
-
 import requests
 import logging
 from config import URL, PORT

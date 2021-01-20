@@ -1,3 +1,4 @@
+import inspect
 import logging
 import subprocess
 import pytest
@@ -10,7 +11,7 @@ log = logging.getLogger(__name__)
 
 
 @pytest.fixture(scope='function')
-def run_stop_server_function():
+def run_stop_server_function(request):
     log.info("Run server")
     process = subprocess.Popen("python server.py")
 
@@ -27,6 +28,7 @@ def run_stop_server_function():
             continue
     else:
         raise Exception("Server is not started!")
+    log.info(request.function)
     yield
 
     log.info("Kill server")

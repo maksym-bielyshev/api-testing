@@ -5,7 +5,7 @@ logging_settings = {
     "version": 1,
     "formatters": {
         "default_formatter": {
-            "format": "%(asctime)s - %(name)s - %(message)s"
+            "format": "%(asctime)s - %(name)s - %(funcName)s - %(message)s"
         },
     },
     "handlers": {
